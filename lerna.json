@@ -1,0 +1,15 @@
+{
+  "version": "independent",
+  "loglevel": "success",
+  "packages": [
+    "packages/*"
+  ],
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "test/**",
+        "package-lock.json"
+      ]
+    }
+  }
+}
