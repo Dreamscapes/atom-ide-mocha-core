@@ -4,7 +4,6 @@ import {
 import { EventEmitter } from 'events'
 import fs from 'fs'
 import path from 'path'
-import pkg from '../../package'
 import { remote } from '../remote'
 import * as util from './util'
 import { config, Linter, Console } from '.'
@@ -20,10 +19,10 @@ class IdeMocha {
 
   config = config
   commands = {
-    [`${pkg.name}:print-address-info`]: ::this.printAddressInfo,
-    [`${pkg.name}:copy-receiver-address`]: ::this.copyReceiverAddress,
-    [`${pkg.name}:copy-mocha-command`]: ::this.copyMochaCommand,
-    [`${pkg.name}:show-help`]: ::this.showHelp,
+    'ide-mocha:print-address-info': ::this.printAddressInfo,
+    'ide-mocha:copy-receiver-address': ::this.copyReceiverAddress,
+    'ide-mocha:copy-mocha-command': ::this.copyMochaCommand,
+    'ide-mocha:show-help': ::this.showHelp,
   }
 
   busy = null
@@ -42,7 +41,7 @@ class IdeMocha {
     this.#subscriptions = new CompositeDisposable()
     this.#reporter = new EventEmitter()
 
-    this.#settings = atom.config.get(pkg.name)
+    this.#settings = atom.config.get('ide-mocha')
     this.#settings.address = util.mkaddress({ root: this.#root, type: this.#settings.interface })
     this.#remote = remote({ address: this.#settings.address, receiver: this.#reporter })
 
