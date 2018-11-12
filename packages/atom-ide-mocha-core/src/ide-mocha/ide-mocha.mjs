@@ -29,6 +29,7 @@ class IdeMocha {
   console = null
   linter = null
   spinner = null
+  currentRuns = 0
 
   stats = {
     total: 0,
@@ -82,9 +83,15 @@ class IdeMocha {
   }
 
   didStartRunning({ runner }) {
+    this.currentRuns++
     this.stats.total = runner.total
     this.stats.completed = 0
-    this.spinner = this.busy.reportBusy('Running Mocha tests: 0%')
+
+    // In case we are already reporting something from previous run, just re-use the existing
+    // spinner instance
+    this.spinner = this.spinner
+      ? this.spinner
+      : this.busy.reportBusy(`Running Mocha tests: ${this.getProgressPercent()}%`)
 
     if (this.#settings.openConsoleOnStart) {
       this.console.focus()
@@ -94,7 +101,13 @@ class IdeMocha {
   }
 
   didFinishRunning({ runner }) {
-    this.spinner = this.spinner.dispose()
+    this.currentRuns--
+
+    // Only stop spinning if all the currently started runs have finished
+    if (!this.currentRuns && this.spinner) {
+      this.spinner = this.spinner.dispose()
+    }
+
     this.stats.total = 0
     this.stats.completed = 0
 
@@ -118,9 +131,7 @@ class IdeMocha {
 
   didFinishTest() {
     this.stats.completed++
-    const percent = Math.floor(this.stats.completed / this.stats.total * 100)
-
-    this.spinner.setTitle(`Running Mocha tests: ${Math.floor(percent)}%`)
+    this.spinner.setTitle(`Running Mocha tests: ${this.getProgressPercent()}%`)
   }
 
   didPassTest({ test }) {
@@ -134,6 +145,10 @@ class IdeMocha {
 
   didSkipTest({ test }) {
     this.console.didSkipTest({ test })
+  }
+
+  getProgressPercent() {
+    return Math.floor(this.stats.completed / this.stats.total * 100)
   }
 
   showSuccessNotification({ stats }) {
