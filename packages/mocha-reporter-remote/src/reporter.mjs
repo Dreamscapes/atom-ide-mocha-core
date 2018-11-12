@@ -1,4 +1,5 @@
 import net from 'net'
+import crypto from 'crypto'
 import Mocha from 'mocha'
 import { JSONTransform } from './json-transform'
 import serialisers from './serialisers'
@@ -24,6 +25,17 @@ class RemoteReporter extends Mocha.reporters.Base {
     'fail',
     'pending',
   ]
+
+  /**
+   * Random execution ID
+   *
+   * Useful to differentiate messages on the receiving end - each ID will belong to a single
+   * instance of this reporter.
+   *
+   * @private
+   * @type    {String}
+   */
+  #id = crypto.randomBytes(3).toString('base64')
 
   /**
    * An instance of Mocha's Test Runner
@@ -62,7 +74,9 @@ class RemoteReporter extends Mocha.reporters.Base {
   }
 
   relay(event, ...args) {
-    this.#remote.write({ event, args })
+    const id = this.#id
+
+    this.#remote.write({ id, event, args })
   }
 
   start() {
