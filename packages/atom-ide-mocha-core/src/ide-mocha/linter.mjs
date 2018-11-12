@@ -61,7 +61,7 @@ class Linter extends Disposable {
   }
 
   dispose() {
-    this.linter.clearMessages()
+    this.#linter.clearMessages()
     this.#subscriptions.dispose()
     this.#messages = null
     this.#linter = null
