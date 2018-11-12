@@ -22,9 +22,8 @@ function remote({ address, receiver }) {
     req
       .pipe(new SplitterTransform())
       .pipe(new JSONTransform())
-      .on('data', ({ event, args }) => {
-        receiver.emit(event, ...args)
-      }))
+      .on('data', ({ event, args }) => { receiver.emit(event, ...args) })
+      .on('error', err => receiver.emit('error', err)))
     .listen(address)
 }
 
