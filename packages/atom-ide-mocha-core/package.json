@@ -1,7 +1,7 @@
 {
   "name": "atom-ide-mocha-core",
   "description": "Code for IDE-Mocha Atom package",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Robert Rossmann",
     "email": "rr.rossmann@me.com"
