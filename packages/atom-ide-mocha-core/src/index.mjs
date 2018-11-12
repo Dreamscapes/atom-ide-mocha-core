@@ -1,1 +1,1 @@
-export { IDEMocha } from './ide-mocha'
+export { IdeMocha } from './ide-mocha'
