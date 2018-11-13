@@ -20,11 +20,11 @@ function remote({ address, receiver }) {
 
   return net.createServer(req =>
     req
+      .once('close', (...args) => receiver.emit('close', ...args))
+      .once('error', err => receiver.emit('error', err))
       .pipe(new SplitterTransform())
       .pipe(new JSONTransform())
-      .on('data', ({ event, args }) => { receiver.emit(event, ...args) })
-      .on('error', err => receiver.emit('error', err)))
-    .listen(address)
+      .on('data', ({ event, args }) => { receiver.emit(event, ...args) })).listen(address)
 }
 
 export {
