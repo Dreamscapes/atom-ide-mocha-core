@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.1.1...atom-ide-mocha-core@1.1.2) (2018-11-13)
+
+
+### Bug Fixes
+
+* the busy spinner may be released while a suite is pending ([e595fa5](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/e595fa5))
+
+
+
+
+
 # [1.1.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.0.2...atom-ide-mocha-core@1.1.0) (2018-11-13)
 
 
