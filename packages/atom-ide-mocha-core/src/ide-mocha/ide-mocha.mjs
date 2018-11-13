@@ -135,7 +135,12 @@ class IdeMocha {
 
   didFinishTest() {
     this.stats.completed++
-    this.spinner.setTitle(`Running Mocha tests: ${this.getProgressPercent()}%`)
+
+    // Because the spinner might be accidentally released before a parallel test suite finishes this
+    // could result in a crash.
+    if (this.spinner) {
+      this.spinner.setTitle(`Running Mocha tests: ${this.getProgressPercent()}%`)
+    }
   }
 
   didPassTest({ test }) {
