@@ -55,6 +55,7 @@ class IdeMocha {
     this.#reporter.on('pass', test => this.didPassTest({ test }))
     this.#reporter.on('fail', (test, err) => this.didFailTest({ test, err }))
     this.#reporter.on('pending', test => this.didSkipTest({ test }))
+    this.#reporter.on('close', () => this.didClose())
   }
 
   deactivate() {
@@ -148,6 +149,17 @@ class IdeMocha {
 
   didSkipTest({ test }) {
     this.console.didSkipTest({ test })
+  }
+
+  didClose() {
+    // I just don't like this! But for now it is definitely better to stop spinning even if there is
+    // more work than to keep the signal spinning forever. 🤷‍♂️
+    if (this.spinner) {
+      this.spinner = this.spinner.dispose()
+    }
+
+    this.stats.total = 0
+    this.stats.completed = 0
   }
 
   getProgressPercent() {
