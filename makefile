@@ -61,6 +61,9 @@ test-debug: force compile
 test-watch: force compile
 	mocha --reporter min $(FTEST) --watch
 
+publish: $(SRCFILES) lint
+	lerna publish --sort --conventional-commits --message "chore: release [ci skip]"
+
 outdated:
 	npm outdated || true
 	lerna exec "npm outdated || true"
