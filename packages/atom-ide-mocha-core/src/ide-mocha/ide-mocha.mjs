@@ -91,7 +91,9 @@ class IdeMocha {
     // spinner instance
     this.spinner = this.spinner
       ? this.spinner
-      : this.busy.reportBusy(`Running Mocha tests: ${this.getProgressPercent()}%`)
+      : this.busy.reportBusy(`Running Mocha tests: ${this.getProgressPercent()}%`, {
+        onDidClick: () => this.console.focus(),
+      })
 
     if (this.#settings.openConsoleOnStart) {
       this.console.focus()
