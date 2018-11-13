@@ -101,7 +101,8 @@ class IdeMocha {
   }
 
   didFinishRunning({ runner }) {
-    this.currentRuns--
+    // Never go below 0
+    this.currentRuns = Math.max(0, --this.currentRuns)
 
     // Only stop spinning if all the currently started runs have finished
     if (!this.currentRuns && this.spinner) {
