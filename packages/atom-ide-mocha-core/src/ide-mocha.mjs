@@ -3,7 +3,8 @@ import fs from 'fs'
 import path from 'path'
 import { Consumer } from 'remote-event-emitter'
 import * as util from './util'
-import { config, Session } from '.'
+import { config } from './config'
+import { Session } from './session'
 
 const CONSOLE_VIEW_URI = 'atom://nuclide/console'
 const HELP_TEMPLATE = fs.readFileSync(path.resolve(__dirname, 'static', 'help.md'), 'utf8')

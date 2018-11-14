@@ -1,4 +1,3 @@
-
 const config = {
   interface: {
     title: 'Preferred interface type',
