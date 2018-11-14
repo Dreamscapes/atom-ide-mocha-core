@@ -41,6 +41,16 @@ const config = {
     type: 'boolean',
     default: true,
   },
+
+  openConsoleOnFailure: {
+    title: 'Open Console pane after failed test run',
+    description: [
+      'When the test suite encountered test failures, open the Console pane to immediately see the',
+      'details.',
+    ].join(' '),
+    type: 'boolean',
+    default: true,
+  },
 }
 
 export {

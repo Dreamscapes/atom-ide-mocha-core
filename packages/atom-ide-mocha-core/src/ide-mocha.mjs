@@ -176,8 +176,14 @@ class IdeMocha {
     source.on('close', () => session.didClose())
 
     session.once('close', ({ stats }) => {
-      if (stats.failures && this.#settings.notifyOnFailure) {
-        this.showFailureNotification({ stats })
+      if (stats.failures) {
+        if (this.#settings.openConsoleOnFailure) {
+          showConsole()
+        }
+
+        if (this.#settings.notifyOnFailure) {
+          this.showFailureNotification({ stats })
+        }
       }
 
       if (!stats.failures && this.#settings.notifyOnSuccess) {
