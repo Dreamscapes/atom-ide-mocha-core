@@ -139,11 +139,19 @@ function mkdiagmessage({ root, test, err }) {
 }
 
 function mkcallsite(err) {
-  const line = stackutils
+  const traces = stackutils
     .clean(err.stack)
     .trim()
     .split(os.EOL)
-    .shift()
+
+  // Attempt to filter out traces pointing to stuff in node_modules
+  // Generally the actual cause of an error is either the top-most trace or some trace a few steps
+  // below something inside node_modules due to userland code calling into some dependency. If we do
+  // not find anything relevant and every trace points to something inside node_modules, well, just
+  // use the top-most trace.
+  const line = traces
+    .filter(trace => !trace.includes('node_modules/'))
+    .shift() || traces.shift()
 
   return stackutils.parseLine(line)
 }
