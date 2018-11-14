@@ -38,7 +38,7 @@ class IdeMocha {
     this.#subscriptions.add(atom.commands.add('atom-workspace', this.commands))
 
     if (typeof this.#settings.address === 'string') {
-      // Ensure the socket does not exist before we bind to it And yes, just ignore any errors
+      // Ensure the socket does not exist before we bind to it. And yes, just ignore any errors
       // thrown here. If the file does not exist it's all good and if we cannot unlink it then well,
       // we can't really do anything anyway and we will instead throw during bind.
       await new Promise(resolve => fs.unlink(this.#settings.address, () => resolve()))
