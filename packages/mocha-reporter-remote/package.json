@@ -30,5 +30,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/Dreamscapes/atom-ide-mocha-core.git"
+  },
+  "dependencies": {
+    "remote-event-emitter": "^1.0.0"
   }
 }

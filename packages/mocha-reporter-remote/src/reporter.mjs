@@ -1,7 +1,5 @@
-import net from 'net'
-import crypto from 'crypto'
 import Mocha from 'mocha'
-import { JSONTransform } from './json-transform'
+import { Provider } from 'remote-event-emitter'
 import serialisers from './serialisers'
 
 /**
@@ -27,17 +25,6 @@ class RemoteReporter extends Mocha.reporters.Base {
   ]
 
   /**
-   * Random execution ID
-   *
-   * Useful to differentiate messages on the receiving end - each ID will belong to a single
-   * instance of this reporter.
-   *
-   * @private
-   * @type    {String}
-   */
-  #id = crypto.randomBytes(3).toString('base64')
-
-  /**
    * An instance of Mocha's Test Runner
    *
    * @private
@@ -46,13 +33,12 @@ class RemoteReporter extends Mocha.reporters.Base {
   #runner = null
 
   /**
-   * The net server to send the data to
-   * Actually this is our initial JSON transform stream but we pipe that to the server later
+   * An event emitter capable of forwarding emitted events to a remote destination
    *
    * @private
-   * @type    {JSONTransform}
+   * @type    {Provider}
    */
-  #remote = new JSONTransform()
+  #provider = null
 
   /**
    * Construct a new reporeter
@@ -65,18 +51,18 @@ class RemoteReporter extends Mocha.reporters.Base {
   constructor(runner, { reporterOptions: options }) {
     super(runner)
 
-    this.#remote.pipe(net.connect(options.address))
     this.#runner = runner
+    // Initialise the remote event emitter provider
+    this.#provider = new Provider({ destination: options.address })
 
+    // Bind Mocha events to functions defined on this class
     RemoteReporter.events.forEach(event => {
       runner.on(event, ::this[event])
     })
   }
 
   relay(event, ...args) {
-    const id = this.#id
-
-    this.#remote.write({ id, event, args })
+    this.#provider.emit(event, ...args)
   }
 
   start() {
@@ -88,8 +74,9 @@ class RemoteReporter extends Mocha.reporters.Base {
     // Print the final test results to the console, just in case
     this.epilogue()
     // Explicitly close the remote so that Node does not hang indefinitely
-    this.#remote.end()
+    this.#provider.end()
     this.#runner = null
+    this.#provider = null
   }
 
   suite(suite) {
