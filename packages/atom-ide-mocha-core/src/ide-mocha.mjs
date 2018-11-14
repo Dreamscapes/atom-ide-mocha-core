@@ -36,6 +36,7 @@ class IdeMocha {
 
     this.#subscriptions = new CompositeDisposable()
     this.#subscriptions.add(atom.commands.add('atom-workspace', this.commands))
+    this.#subscriptions.add(atom.config.onDidChange('ide-mocha', ::this.didChangeConfig))
 
     if (typeof this.#settings.address === 'string') {
       // Ensure the socket does not exist before we bind to it. And yes, just ignore any errors
@@ -157,6 +158,17 @@ class IdeMocha {
 
 
   // IMPLEMENTATION
+
+  didChangeConfig(change) {
+    this.#settings = change.newValue
+
+    // @TODO: Close sockets and create new ones when the interface changes ⚠️
+    if (change.newValue.interface !== change.oldValue.interface) {
+      atom.notifications.addInfo('Please reload Atom for the interface change to take effect.', {
+        description: '**IDE-Mocha**',
+      })
+    }
+  }
 
   didReceiveConnection(source) {
     const session = new Session({
