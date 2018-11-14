@@ -173,7 +173,6 @@ class IdeMocha {
 
   showSuccessNotification({ stats }) {
     atom.notifications.addSuccess('Test suite passed.', {
-      dismissable: true,
       description: '**IDE-Mocha**',
       detail: stats,
     })
@@ -181,7 +180,6 @@ class IdeMocha {
 
   showFailureNotification({ stats }) {
     atom.notifications.addError('Test suite failed.', {
-      dismissable: true,
       description: '**IDE-Mocha**',
       detail: stats,
       buttons: [{
@@ -201,7 +199,6 @@ class IdeMocha {
   copyReceiverAddress() {
     atom.clipboard.write(this.#settings.address)
     atom.notifications.addInfo('Copied!', {
-      dismissable: true,
       description: '**IDE-Mocha**',
     })
   }
@@ -212,7 +209,6 @@ class IdeMocha {
 
     atom.clipboard.write(command)
     atom.notifications.addInfo('Copied!', {
-      dismissable: true,
       description: '**IDE-Mocha**',
     })
   }
@@ -223,9 +219,9 @@ class IdeMocha {
     const help = HELP_TEMPLATE.replace('#{COMMAND}', command)
 
     atom.notifications.addInfo('IDE-Mocha: Help', {
-      dismissable: true,
       description: help,
       icon: 'mortar-board',
+      dismissable: true,
       buttons: [{
         // Extra space to make room between the clippy icon and text 🎨
         text: ' Copy Mocha command to clipboard',
