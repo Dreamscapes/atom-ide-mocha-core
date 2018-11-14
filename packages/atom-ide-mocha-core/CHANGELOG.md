@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.2.0...atom-ide-mocha-core@1.2.1) (2018-11-14)
+
+
+### Bug Fixes
+
+* do not require Atom restart to apply new settings ([3d63625](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/3d63625))
+
+
+
+
+
 # [1.2.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.1.3...atom-ide-mocha-core@1.2.0) (2018-11-14)
 
 
