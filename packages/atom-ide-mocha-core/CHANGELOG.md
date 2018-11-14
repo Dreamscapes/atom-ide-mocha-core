@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.1.2...atom-ide-mocha-core@1.1.3) (2018-11-14)
+
+
+### Bug Fixes
+
+* improve UX by making all notifications dismissable with ESC ❤️ ([f4be377](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/f4be377))
+
+
+
+
+
 ## [1.1.2](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.1.1...atom-ide-mocha-core@1.1.2) (2018-11-13)
 
 
