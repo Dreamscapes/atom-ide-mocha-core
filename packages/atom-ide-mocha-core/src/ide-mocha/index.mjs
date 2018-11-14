@@ -1,11 +1,9 @@
 import { IdeMocha } from './ide-mocha'
-import { Console } from './console'
-import { Linter } from './linter'
+import { Session } from './session'
 import { config } from './config'
 
 export {
   IdeMocha,
-  Console,
-  Linter,
+  Session,
   config,
 }

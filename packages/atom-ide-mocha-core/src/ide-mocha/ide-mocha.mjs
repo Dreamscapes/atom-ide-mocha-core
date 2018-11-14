@@ -1,219 +1,116 @@
-import {
-  CompositeDisposable,
-} from 'atom'
-import { EventEmitter } from 'events'
+import { CompositeDisposable } from 'atom'
 import fs from 'fs'
 import path from 'path'
-import { remote } from '../remote'
+import { Consumer } from 'remote-event-emitter'
 import * as util from './util'
-import { config, Linter, Console } from '.'
+import { config, Session } from '.'
 
+const CONSOLE_VIEW_URI = 'atom://nuclide/console'
 const HELP_TEMPLATE = fs.readFileSync(path.resolve(__dirname, 'static', 'help.md'), 'utf8')
 
 class IdeMocha {
-  #root = null
-  #subscriptions = null
-  #settings = null
-  #reporter = null
-  #remote = null
-
   config = config
   commands = {
-    'ide-mocha:print-address-info': ::this.printAddressInfo,
-    'ide-mocha:copy-receiver-address': ::this.copyReceiverAddress,
-    'ide-mocha:copy-mocha-command': ::this.copyMochaCommand,
-    'ide-mocha:show-help': ::this.showHelp,
+    'ide-mocha:print-address-info': ::this.doPrintAddressInfo,
+    'ide-mocha:copy-receiver-address': ::this.doCopyReceiverAddress,
+    'ide-mocha:copy-mocha-command': ::this.doCopyMochaCommand,
+    'ide-mocha:show-help': ::this.doShowHelp,
   }
 
-  busy = null
-  console = null
-  linter = null
-  spinner = null
-  currentRuns = 0
+  #subscriptions = null
+  #busy = null
+  #console = null
+  #linter = null
+  #remote = null
 
-  stats = {
-    total: 0,
-    completed: 0,
-  }
+  #root = null
+  #settings = null
 
-  activate() {
+  // LIFECYCLE
+
+  async activate() {
     this.#root = atom.project.getPaths().shift()
-
-    this.#subscriptions = new CompositeDisposable()
-    this.#reporter = new EventEmitter()
-
     this.#settings = atom.config.get('ide-mocha')
     this.#settings.address = util.mkaddress({ root: this.#root, type: this.#settings.interface })
-    this.#remote = remote({ address: this.#settings.address, receiver: this.#reporter })
 
+    this.#subscriptions = new CompositeDisposable()
     this.#subscriptions.add(atom.commands.add('atom-workspace', this.commands))
 
-    this.#reporter.on('start', runner => this.didStartRunning({ runner }))
-    this.#reporter.on('end', runner => this.didFinishRunning({ runner }))
-    this.#reporter.on('suite', suite => this.didStartSuite({ suite }))
-    this.#reporter.on('test end', () => this.didFinishTest())
-    this.#reporter.on('pass', test => this.didPassTest({ test }))
-    this.#reporter.on('fail', (test, err) => this.didFailTest({ test, err }))
-    this.#reporter.on('pending', test => this.didSkipTest({ test }))
-    this.#reporter.on('close', () => this.didClose())
+    if (typeof this.#settings.address === 'string') {
+      // Ensure the socket does not exist before we bind to it And yes, just ignore any errors
+      // thrown here. If the file does not exist it's all good and if we cannot unlink it then well,
+      // we can't really do anything anyway and we will instead throw during bind.
+      await new Promise(resolve => fs.unlink(this.#settings.address, () => resolve()))
+    }
+
+    this.#remote = new Consumer()
+    this.#remote.on('connection', ::this.didReceiveConnection)
+    await this.#remote.listen({ address: this.#settings.address })
   }
 
-  deactivate() {
-    this.spinner && this.spinner.dispose()
+  async deactivate() {
+    await this.#remote.close()
     this.#subscriptions.dispose()
+    this.#subscriptions = null
+    this.#busy = null
+    this.#console = null
+    this.#linter = null
+    this.#remote = null
     this.#settings = null
-    this.#remote.close()
-    this.#reporter = null
-    this.busy = null
-    this.console = null
-    this.linter = null
+    this.#root = null
   }
+
+  // CONSUMED SERVICES
 
   consumeBusySignal(busy) {
-    this.busy = busy
+    this.#busy = busy
+    this.#subscriptions.add(this.#busy)
   }
 
   consumeConsole(mkconsole) {
-    this.console = new Console({ mkconsole })
-    this.#subscriptions.add(this.console)
+    this.#console = mkconsole({
+      id: 'IDE-Mocha',
+      name: 'IDE-Mocha',
+    })
+    this.#subscriptions.add(this.#console)
   }
 
   consumeLinter(mklinter) {
-    this.linter = new Linter({ mklinter, root: this.#root })
-    this.#subscriptions.add(this.linter)
-  }
-
-  didStartRunning({ runner }) {
-    this.currentRuns++
-    this.stats.total = runner.total
-    this.stats.completed = 0
-
-    // In case we are already reporting something from previous run, just re-use the existing
-    // spinner instance
-    this.spinner = this.spinner
-      ? this.spinner
-      : this.busy.reportBusy(`Running Mocha tests: ${this.getProgressPercent()}%`, {
-        onDidClick: () => this.console.focus(),
-      })
-
-    if (this.#settings.openConsoleOnStart) {
-      this.console.focus()
-    }
-
-    this.linter.didStartRunning()
-  }
-
-  didFinishRunning({ runner }) {
-    // Never go below 0
-    this.currentRuns = Math.max(0, --this.currentRuns)
-
-    // Only stop spinning if all the currently started runs have finished
-    if (!this.currentRuns && this.spinner) {
-      this.spinner = this.spinner.dispose()
-    }
-
-    this.stats.total = 0
-    this.stats.completed = 0
-
-    const stats = util.mkstats({ runner })
-
-    this.linter.didFinishRunning()
-    this.console.didFinishRunning({ stats })
-
-    if (!runner.stats.failures && this.#settings.notifyOnSuccess) {
-      this.showSuccessNotification({ stats })
-    }
-
-    if (runner.stats.failures && this.#settings.notifyOnFailure) {
-      this.showFailureNotification({ stats })
-    }
-  }
-
-  didStartSuite({ suite }) {
-    this.console.didStartSuite({ suite })
-  }
-
-  didFinishTest() {
-    this.stats.completed++
-
-    // Because the spinner might be accidentally released before a parallel test suite finishes this
-    // could result in a crash.
-    if (this.spinner) {
-      this.spinner.setTitle(`Running Mocha tests: ${this.getProgressPercent()}%`)
-    }
-  }
-
-  didPassTest({ test }) {
-    this.console.didPassTest({ test })
-  }
-
-  didFailTest({ test, err }) {
-    this.console.didFailTest({ test, err })
-    this.linter.didFailTest({ test, err })
-  }
-
-  didSkipTest({ test }) {
-    this.console.didSkipTest({ test })
-  }
-
-  didClose() {
-    // I just don't like this! But for now it is definitely better to stop spinning even if there is
-    // more work than to keep the signal spinning forever. 🤷‍♂️
-    if (this.spinner) {
-      this.spinner = this.spinner.dispose()
-    }
-
-    this.stats.total = 0
-    this.stats.completed = 0
-  }
-
-  getProgressPercent() {
-    return Math.floor(this.stats.completed / this.stats.total * 100)
-  }
-
-  showSuccessNotification({ stats }) {
-    atom.notifications.addSuccess('Test suite passed.', {
-      description: '**IDE-Mocha**',
-      detail: stats,
+    this.#linter = mklinter({
+      name: 'IDE-Mocha',
     })
+    this.#subscriptions.add(this.#linter)
   }
 
-  showFailureNotification({ stats }) {
-    atom.notifications.addError('Test suite failed.', {
-      description: '**IDE-Mocha**',
-      detail: stats,
-      buttons: [{
-        text: 'Open Console',
-        onDidClick: () => this.console.focus(),
-      }],
-    })
-  }
 
-  printAddressInfo() {
+  // COMMANDS
+
+  doPrintAddressInfo() {
     const address = util.mkaddressinfo({ address: this.#remote.address() })
     const type = this.#settings.interface
 
-    this.console.printAddressInfo({ address, type })
+    this.#console.info(`Listening (${type}): ${address}`)
+    return showConsole()
   }
 
-  copyReceiverAddress() {
+  doCopyReceiverAddress() {
     atom.clipboard.write(this.#settings.address)
-    atom.notifications.addInfo('Copied!', {
+    atom.notifications.addSuccess('Copied!', {
       description: '**IDE-Mocha**',
     })
   }
 
-  copyMochaCommand() {
+  doCopyMochaCommand() {
     const address = this.#settings.address
     const command = util.mkcommandinfo({ address })
 
     atom.clipboard.write(command)
-    atom.notifications.addInfo('Copied!', {
+    atom.notifications.addSuccess('Copied!', {
       description: '**IDE-Mocha**',
     })
   }
 
-  showHelp() {
+  doShowHelp() {
     const address = this.#settings.address
     const command = util.mkcommandinfo({ address })
     const help = HELP_TEMPLATE.replace('#{COMMAND}', command)
@@ -235,6 +132,62 @@ class IdeMocha {
       }],
     })
   }
+
+
+  // TEST RESULTS NOTIFICATIONS
+
+  showSuccessNotification({ stats }) {
+    atom.notifications.addSuccess('Test suite passed.', {
+      description: '**IDE-Mocha**',
+      detail: util.mkstats({ stats }),
+    })
+  }
+
+  showFailureNotification({ stats }) {
+    atom.notifications.addError('Test suite failed.', {
+      description: '**IDE-Mocha**',
+      detail: util.mkstats({ stats }),
+      buttons: [{
+        text: 'Open Console',
+        onDidClick: showConsole,
+      }],
+    })
+  }
+
+
+  // IMPLEMENTATION
+
+  didReceiveConnection(source) {
+    const session = new Session({
+      root: this.#root,
+      linter: this.#linter,
+      busy: this.#busy,
+      console: this.#console,
+    })
+
+    source.on('start', runner => session.didStartRunning({ runner }))
+    source.on('end', runner => session.didFinishRunning({ runner }))
+    source.on('suite', suite => session.didStartSuite({ suite }))
+    source.on('test end', () => session.didFinishTest())
+    source.on('pass', test => session.didPassTest({ test }))
+    source.on('fail', (test, err) => session.didFailTest({ test, err }))
+    source.on('pending', test => session.didSkipTest({ test }))
+    source.on('close', () => session.didClose())
+
+    session.once('close', ({ stats }) => {
+      if (stats.failures && this.#settings.notifyOnFailure) {
+        this.showFailureNotification({ stats })
+      }
+
+      if (!stats.failures && this.#settings.notifyOnSuccess) {
+        this.showSuccessNotification({ stats })
+      }
+    })
+  }
+}
+
+function showConsole() {
+  return atom.workspace.open(CONSOLE_VIEW_URI)
 }
 
 export {

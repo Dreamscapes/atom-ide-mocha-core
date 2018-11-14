@@ -29,12 +29,12 @@ function mkcommandinfo({ address }) {
   ].join(' ')
 }
 
-function mkstats({ runner }) {
+function mkstats({ stats }) {
   return [
-    `Passing: ${runner.stats.passes}`,
-    `Failing: ${runner.stats.failures}`,
-    `Pending: ${runner.stats.pending}`,
-    `Duration: ${runner.stats.duration} ms`,
+    `Passing: ${stats.passes}`,
+    `Failing: ${stats.failures}`,
+    `Pending: ${stats.pending}`,
+    `Duration: ${stats.duration} ms`,
   ].join('\n')
 }
 
