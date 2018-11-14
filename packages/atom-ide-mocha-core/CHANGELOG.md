@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.1.3...atom-ide-mocha-core@1.2.0) (2018-11-14)
+
+
+### Features
+
+* add option to open Console on suite failure ([c6c1524](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/c6c1524))
+* attempt to extract more meaningful stack traces for diagnostics ([454eaf0](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/454eaf0))
+* epic rewrite, more stable, such wow 🐕 ([c84de1a](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/c84de1a))
+
+
+
+
+
 ## [1.1.3](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.1.2...atom-ide-mocha-core@1.1.3) (2018-11-14)
 
 
