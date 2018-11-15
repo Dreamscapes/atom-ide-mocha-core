@@ -32,7 +32,7 @@ class IdeMocha {
     this.#settings = atom.config.get('ide-mocha')
     this.#subscriptions = new CompositeDisposable()
     this.#subscriptions.add(atom.commands.add('atom-workspace', this.commands))
-    this.#subscriptions.add(atom.menus.add(this.menus))
+    this.#subscriptions.add(atom.menu.add(this.menus))
     this.#subscriptions.add(atom.config.onDidChange('ide-mocha', ::this.didChangeConfig))
     this.#subscriptions.add(atom.project.onDidChangePaths(::this.didChangePaths))
     // Initial socket setup because the above listener is not triggered at Atom startup Delay socket
@@ -163,14 +163,14 @@ class IdeMocha {
 
   // IMPLEMENTATION
 
-  didChangeConfig(change) {
+  async didChangeConfig(change) {
     this.#settings = change.newValue
 
-    // @TODO: Close sockets and create new ones when the interface changes ⚠️
     if (change.newValue.interface !== change.oldValue.interface) {
-      atom.notifications.addInfo('Please reload Atom for the interface change to take effect.', {
-        description: '**IDE-Mocha**',
-      })
+      // Force-close all existing sockets by pretending we have no project folders and start new
+      // sockets (with updated configuration) immediately after
+      await this.didChangePaths([])
+      await this.didChangePaths(atom.project.getPaths())
     }
   }
 
