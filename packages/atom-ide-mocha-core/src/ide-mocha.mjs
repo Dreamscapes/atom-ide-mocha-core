@@ -109,6 +109,14 @@ class IdeMocha {
     const primary = atom.project.getPaths().shift()
     const address = this.#remotes.get(primary).address
     const command = util.mkcommandinfo({ address })
+
+    return this.showHelpNotification({ command })
+  }
+
+
+  // TEST RESULTS NOTIFICATIONS
+
+  showHelpNotification({ command }) {
     const help = HELP_TEMPLATE.replace('#{COMMAND}', command)
 
     atom.notifications.addInfo('IDE-Mocha: Help', {
@@ -127,9 +135,6 @@ class IdeMocha {
       }],
     })
   }
-
-
-  // TEST RESULTS NOTIFICATIONS
 
   showSuccessNotification({ stats }) {
     atom.notifications.addSuccess('Test suite passed.', {
