@@ -3,13 +3,14 @@ import fs from 'fs'
 import path from 'path'
 import { Consumer } from 'remote-event-emitter'
 import * as util from './util'
-import { config } from './config'
+import { config, menus } from './definitions'
 import { Session } from './session'
 
 const HELP_TEMPLATE = fs.readFileSync(path.resolve(__dirname, 'static', 'help.md'), 'utf8')
 
 class IdeMocha {
   config = config
+  menus = menus
   commands = {
     'ide-mocha:print-address-info': ::this.doPrintAddressInfo,
     'ide-mocha:copy-receiver-address': ::this.doCopyReceiverAddress,
@@ -31,6 +32,7 @@ class IdeMocha {
     this.#settings = atom.config.get('ide-mocha')
     this.#subscriptions = new CompositeDisposable()
     this.#subscriptions.add(atom.commands.add('atom-workspace', this.commands))
+    this.#subscriptions.add(atom.menus.add(this.menus))
     this.#subscriptions.add(atom.config.onDidChange('ide-mocha', ::this.didChangeConfig))
     this.#subscriptions.add(atom.project.onDidChangePaths(::this.didChangePaths))
     // Initial socket setup because the above listener is not triggered at Atom startup Delay socket
