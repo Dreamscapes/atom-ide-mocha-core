@@ -72,16 +72,12 @@ class RemoteReporter extends Mocha.reporters.Base {
     })
   }
 
-  relay(event, ...args) {
-    this.#provider.emit(event, ...args)
-  }
-
   start() {
-    this.relay('start', serialisers.runner(this.#runner))
+    this.#provider.emit('start', serialisers.runner(this.#runner))
   }
 
   end() {
-    this.relay('end', serialisers.runner(this.#runner))
+    this.#provider.emit('end', serialisers.runner(this.#runner))
 
     // Print the final test results to the console, just in case
     if (!this.#options.nostats) {
@@ -95,39 +91,39 @@ class RemoteReporter extends Mocha.reporters.Base {
   }
 
   suite(suite) {
-    this.relay('suite', serialisers.suite(suite))
+    this.#provider.emit('suite', serialisers.suite(suite))
   }
 
   'suite end'(suite) {
-    this.relay('suite end', serialisers.suite(suite))
+    this.#provider.emit('suite end', serialisers.suite(suite))
   }
 
   test(test) {
-    this.relay('test', serialisers.runnable(test))
+    this.#provider.emit('test', serialisers.runnable(test))
   }
 
   'test end'(test) {
-    this.relay('test end', serialisers.runnable(test))
+    this.#provider.emit('test end', serialisers.runnable(test))
   }
 
   hook(hook) {
-    this.relay('hook', serialisers.runnable(hook))
+    this.#provider.emit('hook', serialisers.runnable(hook))
   }
 
   'hook end'(hook) {
-    this.relay('hook end', serialisers.runnable(hook))
+    this.#provider.emit('hook end', serialisers.runnable(hook))
   }
 
   pass(test) {
-    this.relay('pass', serialisers.runnable(test))
+    this.#provider.emit('pass', serialisers.runnable(test))
   }
 
   fail(test, err) {
-    this.relay('fail', serialisers.runnable(test), serialisers.err(err))
+    this.#provider.emit('fail', serialisers.runnable(test), serialisers.err(err))
   }
 
   pending(test) {
-    this.relay('pending', serialisers.runnable(test))
+    this.#provider.emit('pending', serialisers.runnable(test))
   }
 }
 
