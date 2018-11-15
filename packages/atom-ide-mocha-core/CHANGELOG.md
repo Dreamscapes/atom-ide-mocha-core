@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.2.1...atom-ide-mocha-core@1.2.2) (2018-11-15)
+
+
+### Bug Fixes
+
+* always attempt to open already existing Console pane ([b157742](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/b157742))
+* default to IP interface on win32 systems ([11d5e1c](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/11d5e1c))
+* restore "Open Console on Start" functionality ([5940390](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/5940390))
+
+
+
+
+
 ## [1.2.1](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.2.0...atom-ide-mocha-core@1.2.1) (2018-11-14)
 
 
