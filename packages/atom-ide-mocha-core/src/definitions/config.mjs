@@ -25,6 +25,28 @@ const config = {
     },
   },
 
+  verbosity: {
+    title: 'Verbosity level',
+    description: [
+      'Specify how much information you would like to see in the console:<br><br>',
+      ' • `spec`: show full logs. This looks similar to the built-in _spec_ reporter.<br>',
+      ' • `suite`: show only suite titles as they are processed.<br>',
+      ' • `min`: show only final suite stats. This looks similar to the built-in _min_ reporter.',
+      '<br>',
+      ' • `silent`: show no output in the console at all.<br><br>',
+      '_You can always watch the current progress by hovering over the busy spinner._<br>',
+      '_Errors are always displayed in the console regardless of this setting._',
+    ].join(' '),
+    type: 'string',
+    enum: [
+      'spec',
+      'suite',
+      'min',
+      'silent',
+    ],
+    default: 'spec',
+  },
+
   notifyOnSuccess: {
     title: 'Notify on successful test run',
     description: 'Show a notification when the test suite finishes successfully.',

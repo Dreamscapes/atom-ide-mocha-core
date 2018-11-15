@@ -224,6 +224,7 @@ class IdeMocha {
       linter: this.#linter,
       busy: this.#busy,
       console: this.#console,
+      verbosity: this.#settings.verbosity,
     })
 
     if (this.#settings.openConsoleOnStart) {

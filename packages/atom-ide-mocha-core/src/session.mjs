@@ -8,6 +8,13 @@ const stackutils = new StackUtils({
   internals: StackUtils.nodeInternals(),
 })
 
+const loglevels = {
+  spec: 4,
+  suite: 3,
+  min: 2,
+  silent: 1,
+}
+
 class Session extends EventEmitter {
   #root = null
   #linter = null
@@ -15,6 +22,7 @@ class Session extends EventEmitter {
   #busy = null
   #spinner = null
   #console = null
+  #loglevel = null
   #stats = {
     total: 0,
     completed: 0,
@@ -28,13 +36,14 @@ class Session extends EventEmitter {
   #isFinished = false
 
   // eslint-disable-next-line no-shadow
-  constructor({ root, linter, busy, console }) {
+  constructor({ root, linter, busy, console, verbosity }) {
     super()
 
     this.#root = root
     this.#linter = linter
     this.#busy = busy
     this.#console = console
+    this.#loglevel = loglevels[verbosity]
   }
 
   didStartRunning({ runner }) {
@@ -53,7 +62,7 @@ class Session extends EventEmitter {
     }
 
     this.#isFinished = true
-    this.#console.log(mkstats({ stats }))
+    this.#loglevel >= loglevels.min && this.#console.log(mkstats({ stats }))
   }
 
   didClose() {
@@ -74,7 +83,8 @@ class Session extends EventEmitter {
       return
     }
 
-    this.#console.log(suite.titlePath.join(' ▶︎ '))
+    console.log(this.#loglevel)
+    this.#loglevel >= loglevels.suite && this.#console.log(suite.titlePath.join(' ▶︎ '))
   }
 
   didFinishTest() {
@@ -84,7 +94,7 @@ class Session extends EventEmitter {
 
   didPassTest({ test }) {
     this.#stats.passes++
-    this.#console.success(test.title)
+    this.#loglevel >= loglevels.spec && this.#console.success(test.title)
   }
 
   didFailTest({ test, err }) {
@@ -107,7 +117,7 @@ class Session extends EventEmitter {
 
   didSkipTest({ test }) {
     this.#stats.pending++
-    this.#console.warn(test.title)
+    this.#loglevel >= loglevels.spec && this.#console.warn(test.title)
   }
 }
 
