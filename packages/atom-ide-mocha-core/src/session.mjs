@@ -53,7 +53,7 @@ class Session extends EventEmitter {
     }
 
     this.#isFinished = true
-    this.#console.info(mkstats({ stats }))
+    this.#console.log(mkstats({ stats }))
   }
 
   didClose() {
