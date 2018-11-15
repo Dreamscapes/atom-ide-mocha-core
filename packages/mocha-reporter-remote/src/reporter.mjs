@@ -25,6 +25,14 @@ class RemoteReporter extends Mocha.reporters.Base {
   ]
 
   /**
+   * Reporter options, as provided by the user
+   *
+   * @private
+   * @type    {Object}
+   */
+  #options = null
+
+  /**
    * An instance of Mocha's Test Runner
    *
    * @private
@@ -47,11 +55,14 @@ class RemoteReporter extends Mocha.reporters.Base {
    * @param   {Object}    opts                          Options object
    * @param   {Object}    opts.reporterOptions          Reporter options, as provided by Mocha
    * @param   {String}    opts.reporterOptions.address  Address to send the events to
+   * @param   {Boolean}   opts.reporterOptions.nostats  If set to a truthy value, the reporter will
+   *                                                    not print the final suite stats to stdout
    */
   constructor(runner, { reporterOptions: options }) {
     super(runner)
 
     this.#runner = runner
+    this.#options = options
     // Initialise the remote event emitter provider
     this.#provider = new Provider({ destination: options.address })
 
@@ -71,8 +82,12 @@ class RemoteReporter extends Mocha.reporters.Base {
 
   end() {
     this.relay('end', serialisers.runner(this.#runner))
+
     // Print the final test results to the console, just in case
-    this.epilogue()
+    if (!this.#options.nostats) {
+      this.epilogue()
+    }
+
     // Explicitly close the remote so that Node does not hang indefinitely
     this.#provider.end()
     this.#runner = null
