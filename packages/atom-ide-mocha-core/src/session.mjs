@@ -2,13 +2,11 @@ import os from 'os'
 import path from 'path'
 import { EventEmitter } from 'events'
 import StackUtils from 'stack-utils'
-import { mkstats } from './util'
+import { mkstats, openConsole } from './util'
 
 const stackutils = new StackUtils({
   internals: StackUtils.nodeInternals(),
 })
-
-const CONSOLE_VIEW_URI = 'atom://nuclide/console'
 
 class Session extends EventEmitter {
   #root = null
@@ -44,7 +42,7 @@ class Session extends EventEmitter {
 
     this.#linter.clearMessages()
     this.#spinner = this.#busy.reportBusy(`Running Mocha tests: ${mkpercent(this.#stats)}%`, {
-      onDidClick: showConsole,
+      onDidClick: openConsole,
     })
   }
 
@@ -158,10 +156,6 @@ function mkcallsite(err) {
 
 function mkpercent(stats) {
   return Math.floor(stats.completed / stats.total * 100)
-}
-
-function showConsole() {
-  return atom.workspace.open(CONSOLE_VIEW_URI)
 }
 
 export {

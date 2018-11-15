@@ -6,7 +6,6 @@ import * as util from './util'
 import { config } from './config'
 import { Session } from './session'
 
-const CONSOLE_VIEW_URI = 'atom://nuclide/console'
 const HELP_TEMPLATE = fs.readFileSync(path.resolve(__dirname, 'static', 'help.md'), 'utf8')
 
 class IdeMocha {
@@ -92,7 +91,7 @@ class IdeMocha {
     const type = this.#settings.interface
 
     this.#console.info(`Listening (${type}): ${address}`)
-    return showConsole()
+    return util.openConsole()
   }
 
   doCopyReceiverAddress() {
@@ -151,7 +150,7 @@ class IdeMocha {
       detail: util.mkstats({ stats }),
       buttons: [{
         text: 'Open Console',
-        onDidClick: showConsole,
+        onDidClick: util.openConsole,
       }],
     })
   }
@@ -190,7 +189,7 @@ class IdeMocha {
     session.once('close', ({ stats }) => {
       if (stats.failures) {
         if (this.#settings.openConsoleOnFailure) {
-          showConsole()
+          util.openConsole()
         }
 
         if (this.#settings.notifyOnFailure) {
@@ -203,10 +202,6 @@ class IdeMocha {
       }
     })
   }
-}
-
-function showConsole() {
-  return atom.workspace.open(CONSOLE_VIEW_URI)
 }
 
 export {

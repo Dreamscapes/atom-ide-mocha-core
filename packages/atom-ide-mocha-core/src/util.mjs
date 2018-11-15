@@ -2,6 +2,8 @@ import os from 'os'
 import path from 'path'
 import hashToPort from 'hash-to-port'
 
+const CONSOLE_VIEW_URI = 'atom://nuclide/console'
+
 function mkaddress({ root, type = 'unix' }) {
   const name = path.basename(root)
 
@@ -38,9 +40,14 @@ function mkstats({ stats }) {
   ].join('\n')
 }
 
+function openConsole() {
+  return atom.workspace.open(CONSOLE_VIEW_URI, { searchAllPanes: true })
+}
+
 export {
   mkaddress,
   mkaddressinfo,
   mkcommandinfo,
   mkstats,
+  openConsole,
 }
