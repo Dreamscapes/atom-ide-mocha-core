@@ -135,6 +135,10 @@ class IdeMocha {
     atom.notifications.addSuccess('Test suite passed.', {
       description: '**IDE-Mocha**',
       detail: util.mkstats({ stats }),
+      buttons: [{
+        text: 'Open Console',
+        onDidClick: util.openConsole,
+      }],
     })
   }
 
