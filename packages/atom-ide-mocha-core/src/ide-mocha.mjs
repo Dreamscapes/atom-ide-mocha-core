@@ -177,6 +177,10 @@ class IdeMocha {
       console: this.#console,
     })
 
+    if (this.#settings.openConsoleOnStart) {
+      util.openConsole()
+    }
+
     source.on('start', runner => session.didStartRunning({ runner }))
     source.on('end', runner => session.didFinishRunning({ runner }))
     source.on('suite', suite => session.didStartSuite({ suite }))
