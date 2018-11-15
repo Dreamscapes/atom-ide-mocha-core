@@ -21,44 +21,34 @@ class IdeMocha {
   #busy = null
   #console = null
   #linter = null
-  #remote = null
-
-  #root = null
+  #remotes = null
   #settings = null
 
   // LIFECYCLE
 
-  async activate() {
-    this.#root = atom.project.getPaths().shift()
+  activate() {
+    this.#remotes = new Map()
     this.#settings = atom.config.get('ide-mocha')
-    this.#settings.address = util.mkaddress({ root: this.#root, type: this.#settings.interface })
-
     this.#subscriptions = new CompositeDisposable()
     this.#subscriptions.add(atom.commands.add('atom-workspace', this.commands))
     this.#subscriptions.add(atom.config.onDidChange('ide-mocha', ::this.didChangeConfig))
-
-    if (typeof this.#settings.address === 'string') {
-      // Ensure the socket does not exist before we bind to it. And yes, just ignore any errors
-      // thrown here. If the file does not exist it's all good and if we cannot unlink it then well,
-      // we can't really do anything anyway and we will instead throw during bind.
-      await new Promise(resolve => fs.unlink(this.#settings.address, () => resolve()))
-    }
-
-    this.#remote = new Consumer()
-    this.#remote.on('connection', ::this.didReceiveConnection)
-    await this.#remote.listen({ address: this.#settings.address })
+    this.#subscriptions.add(atom.project.onDidChangePaths(::this.didChangePaths))
+    // Initial socket setup because the above listener is not triggered at Atom startup Delay socket
+    // activation due to Atom sometimes not returning project paths when we get activated 🤷‍♂️
+    setImmediate(() => this.didChangePaths(atom.project.getPaths()))
   }
 
   async deactivate() {
-    await this.#remote.close()
+    // Close all opened remotes
+    await this.didChangePaths([])
+
     this.#subscriptions.dispose()
     this.#subscriptions = null
     this.#busy = null
     this.#console = null
     this.#linter = null
-    this.#remote = null
+    this.#remotes = new Map()
     this.#settings = null
-    this.#root = null
   }
 
   // CONSUMED SERVICES
@@ -87,32 +77,37 @@ class IdeMocha {
   // COMMANDS
 
   doPrintAddressInfo() {
-    const address = util.mkaddressinfo({ address: this.#remote.address() })
-    const type = this.#settings.interface
+    for (const [folder, { address }] of this.#remotes.entries()) {
+      this.#console.log(`${path.basename(folder)}: ${address}`)
+    }
 
-    this.#console.info(`Listening (${type}): ${address}`)
     return util.openConsole()
   }
 
   doCopyReceiverAddress() {
-    atom.clipboard.write(this.#settings.address)
-    atom.notifications.addSuccess('Copied!', {
+    const primary = atom.project.getPaths().shift()
+    const address = this.#remotes.get(primary).address
+
+    atom.clipboard.write(address)
+    atom.notifications.addSuccess(`Copied for project folder: ${path.basename(primary)}!`, {
       description: '**IDE-Mocha**',
     })
   }
 
   doCopyMochaCommand() {
-    const address = this.#settings.address
+    const primary = atom.project.getPaths().shift()
+    const address = this.#remotes.get(primary).address
     const command = util.mkcommandinfo({ address })
 
     atom.clipboard.write(command)
-    atom.notifications.addSuccess('Copied!', {
+    atom.notifications.addSuccess(`Copied for project folder: ${path.basename(primary)}!`, {
       description: '**IDE-Mocha**',
     })
   }
 
   doShowHelp() {
-    const address = this.#settings.address
+    const primary = atom.project.getPaths().shift()
+    const address = this.#remotes.get(primary).address
     const command = util.mkcommandinfo({ address })
     const help = HELP_TEMPLATE.replace('#{COMMAND}', command)
 
@@ -122,14 +117,13 @@ class IdeMocha {
       dismissable: true,
       buttons: [{
         // Extra space to make room between the clippy icon and text 🎨
-        text: ' Copy Mocha command to clipboard',
+        text: ' Copy Mocha command',
         className: 'btn btn-info icon-clippy selected',
-        onDidClick() {
-          atom.clipboard.write(command)
-          atom.notifications.addSuccess('Copied!', {
-            description: '**IDE-Mocha**',
-          })
-        },
+        onDidClick: ::this.doCopyReceiverAddress,
+      }, {
+        text: ' Show sockets for all folders',
+        className: 'btn btn-info',
+        onDidClick: ::this.doPrintAddressInfo,
       }],
     })
   }
@@ -169,9 +163,53 @@ class IdeMocha {
     }
   }
 
-  didReceiveConnection(source) {
+  async didChangePaths(paths) {
+    const removed = Array
+      .from(this.#remotes.keys())
+      .filter(folder => !paths.includes(folder))
+
+    await Promise.all(removed.map(::this.destroyRemoteForFolder))
+    await Promise.all(paths.map(::this.createRemoteForFolder))
+  }
+
+  async createRemoteForFolder(folder) {
+    // This project folder already has a socket, move on
+    if (this.#remotes.has(folder)) {
+      return
+    }
+
+    const type = this.#settings.interface
+    const socket = new Consumer()
+    const address = util.mkaddress({ root: folder, type })
+    const remote = { address, socket }
+    this.#remotes.set(folder, remote)
+
+    // Ensure the socket does not exist before we bind to it. And yes, just ignore any errors
+    // thrown here. If the file does not exist it's all good and if we cannot unlink it then well,
+    // we can't really do anything anyway and we will instead throw during bind.
+    if (typeof address === 'string') {
+      await new Promise(resolve => fs.unlink(address, () => resolve()))
+    }
+
+    remote.socket.on('connection', source => this.didReceiveConnection({ folder, source }))
+    await remote.socket.listen({ address })
+  }
+
+  async destroyRemoteForFolder(folder) {
+    const remote = this.#remotes.get(folder)
+
+    // Socket already destroyed, move on
+    if (!remote) {
+      return
+    }
+
+    this.#remotes.delete(folder)
+    await remote.socket.close()
+  }
+
+  didReceiveConnection({ folder, source }) {
     const session = new Session({
-      root: this.#root,
+      root: folder,
       linter: this.#linter,
       busy: this.#busy,
       console: this.#console,

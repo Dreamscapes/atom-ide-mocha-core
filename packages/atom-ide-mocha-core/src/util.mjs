@@ -17,12 +17,6 @@ function mkaddress({ root, type = 'unix' }) {
   }
 }
 
-function mkaddressinfo({ address }) {
-  return typeof address === 'string'
-    ? address
-    : `${address.address}:${address.port} (${address.family})`
-}
-
 function mkcommandinfo({ address }) {
   return [
     'npx mocha',
@@ -46,7 +40,6 @@ function openConsole() {
 
 export {
   mkaddress,
-  mkaddressinfo,
   mkcommandinfo,
   mkstats,
   openConsole,
