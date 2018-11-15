@@ -4,12 +4,12 @@ export PATH := node_modules/.bin/:$(PATH)
 export NODE_OPTIONS := --trace-deprecation
 
 # Modify these variables in local.mk to add flags to the commands, ie.
-# FTEST += --reporter nyan
+# MOCHA_FLAGS += --reporter nyan
 # Now mocha will be invoked with the extra flag and will show a nice nyan cat as progress bar 🎉
-FTEST :=
-FCOMPILE :=
-FLINT :=
-FINSTALL :=
+MOCHA_FLAGS :=
+BABEL_FLAGS :=
+LINTER_FLAGS :=
+NPM_FLAGS :=
 
 SRCFILES := $(patsubst %.mjs, %.js, $(shell utils/make/projectfiles.sh mjs))
 GITFILES := $(patsubst utils/githooks/%, .git/hooks/%, $(wildcard utils/githooks/*))
@@ -21,18 +21,18 @@ all: precompile githooks
 # GENERIC TARGETS
 
 node_modules: package.json
-	npm install $(FINSTALL) && lerna bootstrap && touch node_modules
+	npm install $(NPM_FLAGS) && lerna bootstrap && touch node_modules
 
 # Default compilation target for all source files
 %.js: %.mjs node_modules babel.config.js
-	babel $< --out-file $@ $(FCOMPILE)
+	babel $< --out-file $@ $(BABEL_FLAGS)
 
 # Default target for all possible git hooks
 .git/hooks/%: utils/githooks/%
 	cp $< $@
 
 coverage/lcov.info: $(SRCFILES)
-	nyc mocha $(FTEST)
+	nyc mocha $(MOCHA_FLAGS)
 
 
 # TASK DEFINITIONS
@@ -44,22 +44,22 @@ compile: $(SRCFILES)
 coverage: coverage/lcov.info
 
 precompile: install
-	babel . --extensions .mjs --out-dir . $(FCOMPILE)
+	babel . --extensions .mjs --out-dir . $(BABEL_FLAGS)
 
 install: node_modules $(GITFILES)
 
 lint: force install
-	eslint --cache --ext .mjs --report-unused-disable-directives $(FLINT) .
+	eslint --cache --ext .mjs --report-unused-disable-directives $(LINTER_FLAGS) .
 	remark --quiet .
 
 test: force compile
-	mocha $(FTEST)
+	mocha $(MOCHA_FLAGS)
 
 test-debug: force compile
-	mocha --inspect --inspect-brk $(FTEST)
+	mocha --inspect --inspect-brk $(MOCHA_FLAGS)
 
 test-watch: force compile
-	mocha --reporter min $(FTEST) --watch
+	mocha --reporter min $(MOCHA_FLAGS) --watch
 
 publish: $(SRCFILES) lint
 	lerna publish --sort --conventional-commits --message "chore: release [ci skip]"
