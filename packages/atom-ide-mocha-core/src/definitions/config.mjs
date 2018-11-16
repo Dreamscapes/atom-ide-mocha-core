@@ -6,9 +6,9 @@ const config = {
     description: [
       'Preferred communications interface. Unix sockets tend to be generally faster, while IP',
       'allows Atom to receive Mocha reports from anywhere on your local loopback interface (ie.',
-      'from inside Docker).<br />Both options will always produce the same socket/port per ',
-      'project, even when Atom restarts.<br /><br />_Windows users should prefer IP since named',
-      'pipes may not work correctly with current implementation._',
+      'from inside Docker).<br>Both options will always produce the same socket/port per project,',
+      'even when Atom restarts.<br><br>_Windows users should prefer IP since named pipes may not',
+      'work correctly with current implementation._',
     ].join(' '),
 
     type: 'string',
