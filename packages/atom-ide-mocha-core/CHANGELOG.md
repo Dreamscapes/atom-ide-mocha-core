@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.3.0...atom-ide-mocha-core@1.4.0) (2018-11-16)
+
+
+### Bug Fixes
+
+* remove forgotten console.log() ([10e4851](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/10e4851))
+
+
+### Features
+
+* add option to configure console verbosity 💬 ([88325f6](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/88325f6))
+* allow changing the interface without restarting Atom 💪 ([b117818](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/b117818))
+
+
+
+
+
 # [1.3.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.2.2...atom-ide-mocha-core@1.3.0) (2018-11-15)
 
 

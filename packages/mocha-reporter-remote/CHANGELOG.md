@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.2.0...mocha-reporter-remote@1.3.0) (2018-11-16)
+
+
+### Features
+
+* add `nostats` flag to reduce stdout noise from the reporter ([16acecb](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/16acecb))
+
+
+
+
+
 # [1.2.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.1.0...mocha-reporter-remote@1.2.0) (2018-11-14)
 
 
