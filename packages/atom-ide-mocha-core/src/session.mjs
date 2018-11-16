@@ -83,7 +83,6 @@ class Session extends EventEmitter {
       return
     }
 
-    console.log(this.#loglevel)
     this.#loglevel >= loglevels.suite && this.#console.log(suite.titlePath.join(' ▶︎ '))
   }
 
