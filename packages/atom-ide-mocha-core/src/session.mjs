@@ -146,6 +146,12 @@ function mkdiagmessage({ root, test, err }) {
 }
 
 function mkcallsite(err) {
+  // Sometimes we could get a weird "error" which is not really an `Error` object and therefore does
+  // not have the `.stack` property. Do not attempt to parse such things.
+  if (!err.stack) {
+    return null
+  }
+
   const traces = stackutils
     .clean(err.stack)
     .trim()
