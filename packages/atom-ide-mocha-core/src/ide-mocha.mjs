@@ -131,7 +131,7 @@ class IdeMocha {
         className: 'btn btn-info icon-clippy selected',
         onDidClick: ::this.doCopyReceiverAddress,
       }, {
-        text: ' Show sockets for all folders',
+        text: ' Show addresses for all project paths',
         className: 'btn btn-info',
         onDidClick: ::this.doPrintAddressInfo,
       }],
