@@ -15,7 +15,7 @@ class IdeMocha {
     'ide-mocha:print-address-info': ::this.doPrintAddressInfo,
     'ide-mocha:copy-receiver-address': ::this.doCopyReceiverAddress,
     'ide-mocha:copy-mocha-command': ::this.doCopyMochaCommand,
-    'ide-mocha:show-help': ::this.doShowHelp,
+    'ide-mocha:help': ::this.doHelp,
   }
 
   #subscriptions = null
@@ -107,7 +107,7 @@ class IdeMocha {
     })
   }
 
-  doShowHelp() {
+  doHelp() {
     const primary = atom.project.getPaths().shift()
     const address = this.#remotes.get(primary).address
     const command = util.mkcommandinfo({ address })

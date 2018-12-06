@@ -3,8 +3,8 @@ const menus = [{
   submenu: [{
     label: 'IDE-Mocha',
     submenu: [{
-      label: 'Show Help',
-      command: 'ide-mocha:show-help',
+      label: 'Help',
+      command: 'ide-mocha:help',
     }, {
       label: 'Print Address Info',
       command: 'ide-mocha:print-address-info',
