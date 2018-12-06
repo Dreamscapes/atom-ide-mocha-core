@@ -35,8 +35,8 @@ class IdeMocha {
     this.#subscriptions.add(atom.menu.add(this.menus))
     this.#subscriptions.add(atom.config.onDidChange('ide-mocha', ::this.didChangeConfig))
     this.#subscriptions.add(atom.project.onDidChangePaths(::this.didChangePaths))
-    // Initial socket setup because the above listener is not triggered at Atom startup Delay socket
-    // activation due to Atom sometimes not returning project paths when we get activated 🤷‍♂️
+    // Initial socket setup because the above listener is not triggered at Atom startup
+    // Delay socket activation due to Atom sometimes not returning project paths at startup 🤷‍♂️
     setImmediate(() => this.didChangePaths(atom.project.getPaths()))
   }
 
