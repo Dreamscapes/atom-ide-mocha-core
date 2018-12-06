@@ -50,9 +50,10 @@ class Session extends EventEmitter {
     this.#stats.total = runner.total
 
     this.#linter.clearMessages()
-    this.#spinner = this.#busy.reportBusy(`Running Mocha tests: ${mkpercent(this.#stats)}%`, {
+    this.#spinner = this.#busy.reportBusy(null, {
       onDidClick: openConsole,
     })
+    this.reportProgress({ stats: this.#stats })
   }
 
   didFinishRunning({ runner }) {
@@ -88,7 +89,7 @@ class Session extends EventEmitter {
 
   didFinishTest() {
     this.#stats.completed++
-    this.#spinner.setTitle(`Running Mocha tests: ${mkpercent(this.#stats)}%`)
+    this.reportProgress({ stats: this.#stats })
   }
 
   didPassTest({ test }) {
@@ -117,6 +118,14 @@ class Session extends EventEmitter {
   didSkipTest({ test }) {
     this.#stats.pending++
     this.#loglevel >= loglevels.spec && this.#console.warn(test.title)
+  }
+
+  reportProgress({ stats }) {
+    const completed = stats.completed
+    const total = stats.total
+    const percent = mkpercent(stats)
+
+    this.#spinner.setTitle(`Running Mocha tests: ${completed} / ${total} (${percent}%)`)
   }
 }
 
