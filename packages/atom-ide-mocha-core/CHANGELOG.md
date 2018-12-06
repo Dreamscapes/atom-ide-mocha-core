@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.4.1...atom-ide-mocha-core@1.5.0) (2018-12-06)
+
+
+### Bug Fixes
+
+* show actual number of tests to be executed in tooltip ([4e06724](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/4e06724))
+* update wording on Mocha Help, it's not always sockets ([e429d2b](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/e429d2b))
+
+
+### Features
+
+* be consistent, use `ide-mocha:help` instead of `show-help` ([d05b9a2](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/d05b9a2))
+* show test counts in busy spinner's tooltip ([866aa52](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/866aa52))
+
+
+
+
+
 ## [1.4.1](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.4.0...atom-ide-mocha-core@1.4.1) (2018-11-23)
 
 
