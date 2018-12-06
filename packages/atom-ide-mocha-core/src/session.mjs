@@ -47,7 +47,7 @@ class Session extends EventEmitter {
   }
 
   didStartRunning({ runner }) {
-    this.#stats.total = runner.total
+    this.#stats.total = runner.suite.total
 
     this.#linter.clearMessages()
     this.#spinner = this.#busy.reportBusy(null, {
@@ -60,6 +60,7 @@ class Session extends EventEmitter {
     const stats = this.#stats = {
       ...this.#stats,
       ...runner.stats,
+      total: runner.suite.total,
     }
 
     this.#isFinished = true
