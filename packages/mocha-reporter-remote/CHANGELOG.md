@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.3.0...mocha-reporter-remote@1.3.1) (2018-12-07)
+
+
+### Bug Fixes
+
+* avoid parse errors when the socket closes ([d144bd2](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/d144bd2)), closes [Dreamscapes/atom-ide-mocha#7](https://github.com/Dreamscapes/atom-ide-mocha/issues/7)
+
+
+
+
+
 # [1.3.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.2.0...mocha-reporter-remote@1.3.0) (2018-11-16)
 
 
