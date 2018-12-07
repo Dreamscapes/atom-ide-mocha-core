@@ -1,6 +1,7 @@
 {
   "name": "atom-ide-mocha-core",
   "description": "Integrate your Mocha test suite's progress with Atom using Atom-IDE-UI components 🎨",
+  "version": "1.0.0",
   "author": "Robert Rossmann <rr.rossmann@me.com>",
   "bugs": "https://github.com/Dreamscapes/atom-ide-mocha-core/issues",
   "contributors": [],
