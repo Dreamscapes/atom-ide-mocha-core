@@ -129,7 +129,7 @@ class IdeMocha {
         // Extra space to make room between the clippy icon and text 🎨
         text: ' Copy Mocha command',
         className: 'btn btn-info icon-clippy selected',
-        onDidClick: ::this.doCopyReceiverAddress,
+        onDidClick: ::this.doCopyMochaCommand,
       }, {
         text: ' Show addresses for all project paths',
         className: 'btn btn-info',
