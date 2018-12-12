@@ -37,6 +37,6 @@ deploy:
   script: utils/release.sh
   on:
     repo: Dreamscapes/atom-ide-mocha-core
-    all_branches: true
-    condition: $TRAVIS_BRANCH = release
+    tags: true
+    condition: $TRAVIS_BRANCH = master
     node_js: '10'
