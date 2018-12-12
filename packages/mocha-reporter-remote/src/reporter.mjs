@@ -1,4 +1,4 @@
-import Mocha from 'mocha'
+import * as Mocha from 'mocha'
 import { Provider } from 'remote-event-emitter'
 import serialisers from './serialisers'
 

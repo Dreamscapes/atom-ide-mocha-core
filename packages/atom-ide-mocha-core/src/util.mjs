@@ -1,6 +1,6 @@
-import os from 'os'
-import path from 'path'
-import hashToPort from 'hash-to-port'
+import * as os from 'os'
+import * as path from 'path'
+import * as hashToPort from 'hash-to-port'
 
 const CONSOLE_VIEW_URI = 'atom://nuclide/console'
 

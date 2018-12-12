@@ -1,7 +1,7 @@
-import os from 'os'
-import path from 'path'
+import * as os from 'os'
+import * as path from 'path'
 import { EventEmitter } from 'events'
-import StackUtils from 'stack-utils'
+import * as StackUtils from 'stack-utils'
 import { mkstats, openConsole } from './util'
 
 const stackutils = new StackUtils({

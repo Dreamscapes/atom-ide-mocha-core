@@ -1,6 +1,6 @@
 import { CompositeDisposable } from 'atom'
-import fs from 'fs'
-import path from 'path'
+import * as fs from 'fs'
+import * as path from 'path'
 import { Consumer } from 'remote-event-emitter'
 import * as util from './util'
 import { config, menus } from './definitions'
