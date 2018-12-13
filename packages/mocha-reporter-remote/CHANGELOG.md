@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.3.1...mocha-reporter-remote@1.3.2) (2018-12-13)
+
+**Note:** Version bump only for package mocha-reporter-remote
+
+
+
+
+
 ## [1.3.1](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.3.0...mocha-reporter-remote@1.3.1) (2018-12-07)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.5.2...atom-ide-mocha-core@1.6.0) (2018-12-13)
+
+
+### Features
+
+* use a better way to extract relevant callsite location from stacks ([e76f6d7](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/e76f6d7))
+
+
+
+
+
 ## [1.5.2](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.5.1...atom-ide-mocha-core@1.5.2) (2018-12-10)
 
 
