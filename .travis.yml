@@ -38,5 +38,4 @@ deploy:
   on:
     repo: Dreamscapes/atom-ide-mocha-core
     tags: true
-    condition: $TRAVIS_BRANCH = master
     node_js: '10'
