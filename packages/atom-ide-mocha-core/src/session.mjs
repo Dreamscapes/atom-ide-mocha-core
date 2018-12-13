@@ -155,28 +155,41 @@ function mkdiagmessage({ root, test, err }) {
   }
 }
 
+/**
+ * Determine the most ideal location in code where to show the source of this error to the user
+ *
+ * @param     {Error}     err     The error with stack traces
+ * @return    {Object}
+ */
 function mkcallsite(err) {
   // Sometimes we could get a weird "error" which is not really an `Error` object and therefore does
   // not have the `.stack` property. Do not attempt to parse such things.
-  if (!err.stack) {
+  if (!err || !err.stack) {
     return null
   }
 
-  const traces = stackutils
+  // Prepare the stack traces by splitting the stack string into individual line records
+  const lines = stackutils
     .clean(err.stack)
     .trim()
     .split(os.EOL)
 
   // Attempt to filter out traces pointing to stuff in node_modules
   // Generally the actual cause of an error is either the top-most trace or some trace a few steps
-  // below something inside node_modules due to userland code calling into some dependency. If we do
-  // not find anything relevant and every trace points to something inside node_modules, well, just
-  // use the top-most trace.
-  const line = traces
-    .filter(trace => !trace.includes('node_modules/'))
-    .shift() || traces.shift()
+  // below something inside node_modules due to userland code calling into some dependency
+  const trace = lines
+    .filter(line => !line.includes('node_modules/'))
+    // Parse the lines into usable data structures
+    .map(line => stackutils.parseLine(line))
+    // Remove lines which do not include file location information (anonymous generated functions,
+    // evals, and various other dynamically-built things)
+    .filter(line => line && line.file)
+    .shift()
+  // If we do not find anything relevant and every trace points to something inside node_modules,
+  // well, just use the top-most trace.
+  || stackutils.parseLine(lines[0])
 
-  return stackutils.parseLine(line)
+  return trace
 }
 
 function mkpercent(stats) {
