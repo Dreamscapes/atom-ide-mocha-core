@@ -166,7 +166,7 @@ class IdeMocha {
   async didChangeConfig(change) {
     this.#settings = change.newValue
 
-    if (change.newValue.interface !== change.oldValue.interface) {
+    if (change.newValue.general.interface !== change.oldValue.general.interface) {
       // Force-close all existing sockets by pretending we have no project folders and start new
       // sockets (with updated configuration) immediately after
       await this.didChangePaths([])
@@ -189,7 +189,7 @@ class IdeMocha {
       return
     }
 
-    const type = this.#settings.interface
+    const type = this.#settings.general.interface
     const socket = new Consumer()
     const address = util.mkaddress({ root: folder, type })
     const remote = { address, socket }
@@ -224,7 +224,7 @@ class IdeMocha {
       linter: this.#linter,
       busy: this.#busy,
       console: this.#console,
-      verbosity: this.#settings.verbosity,
+      verbosity: this.#settings.general.verbosity,
     })
 
     source.on('start', runner => session.didStartRunning({ runner }))
@@ -238,25 +238,25 @@ class IdeMocha {
 
     session.once('close', ({ stats }) => {
       if (stats.failures) {
-        if (this.#settings.openConsoleOnFailure) {
+        if (this.#settings.console.openConsoleOnFailure) {
           util.openConsole()
         }
 
-        if (this.#settings.notifyOnFailure) {
+        if (this.#settings.notifications.notifyOnFailure) {
           this.showFailureNotification({ stats })
         }
       }
 
-      if (!stats.failures && this.#settings.notifyOnSuccess) {
+      if (!stats.failures && this.#settings.notifications.notifyOnSuccess) {
         this.showSuccessNotification({ stats })
       }
     })
 
-    if (this.#settings.openConsoleOnStart) {
+    if (this.#settings.console.openConsoleOnStart) {
       util.openConsole()
     }
 
-    if (this.#settings.clearConsoleOnStart) {
+    if (this.#settings.console.clearConsoleOnStart) {
       util.clearConsole()
     }
   }
