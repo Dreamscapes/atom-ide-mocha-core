@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.6.0...atom-ide-mocha-core@2.0.0) (2019-01-02)
+
+
+### Features
+
+* add option to clear the console on new test session ([ed4265b](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/ed4265b))
+* open console immediately when a failure occurs ([628169d](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/628169d))
+* re-organise config ([3270c61](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/3270c61))
+
+
+### BREAKING CHANGES
+
+* Old configuration will no longer apply.
+
+
+
+
+
 # [1.6.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.5.2...atom-ide-mocha-core@1.6.0) (2018-12-13)
 
 
