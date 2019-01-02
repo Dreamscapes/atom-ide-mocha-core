@@ -9,9 +9,7 @@
       "allowBranch": ["master"],
       "conventionalCommits": true,
       "message": "chore: release",
-      "signGitCommit": true
-    },
-    "publish": {
+      "signGitCommit": true,
       "ignoreChanges": [
         "test/**",
         "package-lock.json"
