@@ -38,9 +38,19 @@ function openConsole() {
   return atom.workspace.open(CONSOLE_VIEW_URI, { searchAllPanes: true })
 }
 
+function clearConsole() {
+  // ⚠️ Dispatching commands programmatically is discouraged since the command names are not part
+  // of a package's public API. However, the Console service does not expose API to clear it. 🤷‍♂️
+  return atom.commands.dispatch(
+    atom.workspace.getActivePane().element,
+    'console:clear',
+  )
+}
+
 export {
   mkaddress,
   mkcommandinfo,
   mkstats,
   openConsole,
+  clearConsole,
 }

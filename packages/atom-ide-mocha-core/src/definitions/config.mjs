@@ -87,6 +87,17 @@ const config = {
     type: 'boolean',
     default: true,
   },
+
+  clearConsoleOnStart: {
+    title: 'Clear Console pane on start',
+    description: [
+      'When Mocha starts providing progress information the Console will be cleared of all',
+      'existing messages from all providers. This is equivalent of running the `Console: Clear`',
+      'command manually.',
+    ].join(' '),
+    type: 'boolean',
+    default: false,
+  },
 }
 
 export {

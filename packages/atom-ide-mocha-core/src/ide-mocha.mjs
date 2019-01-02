@@ -227,10 +227,6 @@ class IdeMocha {
       verbosity: this.#settings.verbosity,
     })
 
-    if (this.#settings.openConsoleOnStart) {
-      util.openConsole()
-    }
-
     source.on('start', runner => session.didStartRunning({ runner }))
     source.on('end', runner => session.didFinishRunning({ runner }))
     source.on('suite', suite => session.didStartSuite({ suite }))
@@ -255,6 +251,14 @@ class IdeMocha {
         this.showSuccessNotification({ stats })
       }
     })
+
+    if (this.#settings.openConsoleOnStart) {
+      util.openConsole()
+    }
+
+    if (this.#settings.clearConsoleOnStart) {
+      util.clearConsole()
+    }
   }
 }
 
