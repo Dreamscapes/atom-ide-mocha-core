@@ -227,21 +227,19 @@ class IdeMocha {
       verbosity: this.#settings.general.verbosity,
     })
 
+    const showConsole = this.#settings.console.openConsoleOnFailure
+
     source.on('start', runner => session.didStartRunning({ runner }))
     source.on('end', runner => session.didFinishRunning({ runner }))
     source.on('suite', suite => session.didStartSuite({ suite }))
     source.on('test end', () => session.didFinishTest())
     source.on('pass', test => session.didPassTest({ test }))
-    source.on('fail', (test, err) => session.didFailTest({ test, err }))
+    source.on('fail', (test, err) => session.didFailTest({ test, err, showConsole }))
     source.on('pending', test => session.didSkipTest({ test }))
     source.on('close', () => session.didClose())
 
     session.once('close', ({ stats }) => {
       if (stats.failures) {
-        if (this.#settings.console.openConsoleOnFailure) {
-          util.openConsole()
-        }
-
         if (this.#settings.notifications.notifyOnFailure) {
           this.showFailureNotification({ stats })
         }

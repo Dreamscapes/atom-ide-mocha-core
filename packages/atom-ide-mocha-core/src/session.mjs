@@ -98,10 +98,14 @@ class Session extends EventEmitter {
     this.#loglevel >= loglevels.spec && this.#console.success(test.title)
   }
 
-  didFailTest({ test, err }) {
+  async didFailTest({ test, err, showConsole }) {
     this.#stats.failures++
     this.#console.error(test.title)
     this.#console.error(err.stack)
+
+    if (showConsole) {
+      await openConsole()
+    }
 
     const message = mkdiagmessage({ root: this.#root, test, err })
 
