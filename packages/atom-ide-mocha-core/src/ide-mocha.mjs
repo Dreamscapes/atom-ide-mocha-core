@@ -224,7 +224,10 @@ class IdeMocha {
       linter: this.#linter,
       busy: this.#busy,
       console: this.#console,
-      verbosity: this.#settings.general.verbosity,
+      settings: {
+        verbosity: this.#settings.general.verbosity,
+        durations: this.#settings.general.durations,
+      },
     })
 
     const showConsole = this.#settings.console.openConsoleOnFailure

@@ -55,6 +55,16 @@ const config = {
         ],
         default: 'spec',
       },
+
+      durations: {
+        title: 'Show test durations in the console',
+        description: [
+          'When enabled, all test cases will have their test duration shown after their titles in',
+          'the console.',
+        ].join(' '),
+        type: 'boolean',
+        default: true,
+      },
     },
   },
 

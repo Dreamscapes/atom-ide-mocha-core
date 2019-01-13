@@ -23,6 +23,7 @@ class Session extends EventEmitter {
   #spinner = null
   #console = null
   #loglevel = null
+  #settings = null
   #stats = {
     total: 0,
     completed: 0,
@@ -36,14 +37,15 @@ class Session extends EventEmitter {
   #isFinished = false
 
   // eslint-disable-next-line no-shadow
-  constructor({ root, linter, busy, console, verbosity }) {
+  constructor({ root, linter, busy, console, settings }) {
     super()
 
     this.#root = root
     this.#linter = linter
     this.#busy = busy
     this.#console = console
-    this.#loglevel = loglevels[verbosity]
+    this.#settings = settings
+    this.#loglevel = loglevels[settings.verbosity]
   }
 
   didStartRunning({ runner }) {
@@ -94,8 +96,14 @@ class Session extends EventEmitter {
   }
 
   didPassTest({ test }) {
+    let message = test.title
+
+    if (this.#settings.durations) {
+      message += ` (${test.duration} ms)`
+    }
+
     this.#stats.passes++
-    this.#loglevel >= loglevels.spec && this.#console.success(test.title)
+    this.#loglevel >= loglevels.spec && this.#console.success(message)
   }
 
   async didFailTest({ test, err, showConsole }) {
