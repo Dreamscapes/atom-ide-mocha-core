@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@2.0.0...atom-ide-mocha-core@2.1.0) (2019-01-13)
+
+
+### Features
+
+* **ui:** allow reporting test case durations to console ([61b3cdd](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/61b3cdd))
+
+
+
+
+
 # [2.0.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/atom-ide-mocha-core@1.6.0...atom-ide-mocha-core@2.0.0) (2019-01-02)
 
 
