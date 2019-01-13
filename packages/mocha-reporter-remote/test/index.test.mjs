@@ -1,10 +1,11 @@
 before(() => true)
 
-xdescribe('Remote reporter', () => {
+describe('Remote reporter', () => {
   before(() => true)
 
   it('works', () => true)
-  it('throws', () => Promise.reject(new Error('muhaha')))
+  it('works after some time', done => setTimeout(done, 10))
+  xit('throws', () => Promise.reject(new Error('muhaha')))
   xit('is in pending state')
 })
 
