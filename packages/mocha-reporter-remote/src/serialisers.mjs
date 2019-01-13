@@ -29,6 +29,8 @@ export default {
       title: runnable.title,
       async: runnable.async,
       sync: runnable.sync,
+      duration: runnable.duration,
+      speed: runnable.speed,
       timedOut: runnable.timedOut,
       pending: runnable.pending,
       type: runnable.type,
