@@ -20,10 +20,6 @@ script:
   - make lint
   - make test
 
-# after_success:
-  # - make coverage
-  # - cat coverage/lcov.info | node_modules/.bin/coveralls
-
 env:
   global:
     # NPM_TOKEN
@@ -34,7 +30,7 @@ before_deploy: ci/before-deploy.sh
 deploy:
   skip_cleanup: true
   provider: script
-  script: utils/release.sh
+  script: ci/deploy.sh
   on:
     repo: Dreamscapes/atom-ide-mocha-core
     tags: true
