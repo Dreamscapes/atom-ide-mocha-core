@@ -61,9 +61,6 @@ test-debug: force compile
 test-watch: force compile
 	mocha --reporter min $(MOCHA_FLAGS) --watch
 
-publish: $(SRCFILES) lint
-	lerna publish --sort --conventional-commits --message "chore: release [ci skip]"
-
 outdated:
 	npm outdated || true
 	lerna exec "npm outdated || true"
@@ -81,6 +78,9 @@ distclean: clean
 
 pristine: distclean
 	rm -rf node_modules packages/*/node_modules
+
+release: $(SRCFILES) lint
+	git pull && lerna version
 
 .PHONY: force
 

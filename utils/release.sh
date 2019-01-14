@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-# Authorise npm for publishing
-cat <<NPMRC >> ~/.npmrc
-//registry.npmjs.org/:_authToken=${NPM_TOKEN}
-NPMRC
+set -o errexit
+set -o pipefail
 
-# Publish!
 npx lerna publish from-git --yes
