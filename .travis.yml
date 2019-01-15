@@ -3,7 +3,7 @@ sudo: false
 dist: trusty
 language: node_js
 node_js:
-  - '10'
+  - '11'
 
 cache:
   directories:
@@ -34,4 +34,4 @@ deploy:
   on:
     repo: Dreamscapes/atom-ide-mocha-core
     branch: master
-    node: '10'
+    node: '11'
