@@ -10,3 +10,4 @@ NPMRC
 
 # Debug: show current diff. If there are any changes Lerna will refuse to perform a release. ⚠️
 git diff
+git reset --hard
