@@ -107,8 +107,15 @@ class Session extends EventEmitter {
   }
 
   async didFailTest({ test, err, showConsole }) {
+    // When not using at least the suite level, the context around a test case is not visible in the
+    // console when an error occurs because it is not logged to it. So, when using a less verbose
+    // reporter print the full test title instead.
+    const title = this.#loglevel < loglevels.suite
+      ? test.fullTitle
+      : test.title
+
     this.#stats.failures++
-    this.#console.error(test.title)
+    this.#console.error(title)
     this.#console.error(err.stack)
 
     if (showConsole) {
