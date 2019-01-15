@@ -33,5 +33,5 @@ deploy:
   script: ci/deploy.sh
   on:
     repo: Dreamscapes/atom-ide-mocha-core
-    tags: true
-    node_js: '10'
+    branch: master
+    node: '10'
