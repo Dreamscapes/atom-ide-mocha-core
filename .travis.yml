@@ -13,7 +13,7 @@ before_install:
   - touch package.json
 
 install:
-  - make install
+  - npm ci && touch node_modules
   - make precompile
 
 script:
