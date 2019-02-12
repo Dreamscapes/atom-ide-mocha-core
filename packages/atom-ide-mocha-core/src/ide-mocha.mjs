@@ -18,17 +18,17 @@ class IdeMocha {
     'ide-mocha:help': ::this.doHelp,
   }
 
-  #subscriptions = null
   #busy = null
   #console = null
   #linter = null
-  #remotes = null
   #settings = null
+
+  #subscriptions = new CompositeDisposable()
+  #remotes = new Map()
 
   // LIFECYCLE
 
   activate() {
-    this.#remotes = new Map()
     this.#settings = atom.config.get('ide-mocha')
     this.#subscriptions = new CompositeDisposable()
     this.#subscriptions.add(atom.commands.add('atom-workspace', this.commands))
@@ -45,7 +45,7 @@ class IdeMocha {
     await this.didChangePaths([])
 
     this.#subscriptions.dispose()
-    this.#subscriptions = null
+    this.#subscriptions = new CompositeDisposable()
     this.#busy = null
     this.#console = null
     this.#linter = null
