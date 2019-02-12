@@ -14,9 +14,10 @@ module.exports = {
   },
 
   extends: [
-    '@strv/javascript/environments/nodejs/v10',
-    '@strv/javascript/environments/nodejs/optional',
-    '@strv/javascript/coding-styles/recommended',
+    '@strv/node/v10',
+    '@strv/node/optional',
+    '@strv/node/style',
+    '@strv/mocha',
   ],
 
   rules: {
