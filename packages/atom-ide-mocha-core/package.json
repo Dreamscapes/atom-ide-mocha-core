@@ -9,6 +9,7 @@
   "bugs": "https://github.com/Dreamscapes/atom-ide-mocha-core/issues",
   "contributors": [],
   "dependencies": {
+    "atom-package-deps": "^5.0.0",
     "hash-to-port": "^1.0.0",
     "remote-event-emitter": "^1.1.0",
     "stack-utils": "^1.0.1"

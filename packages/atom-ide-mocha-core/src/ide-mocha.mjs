@@ -1,6 +1,7 @@
 import { CompositeDisposable } from 'atom'
 import * as fs from 'fs'
 import * as path from 'path'
+import { install } from 'atom-package-deps'
 import { Consumer } from 'remote-event-emitter'
 import * as util from './util'
 import { config, menus } from './definitions'
@@ -28,7 +29,11 @@ class IdeMocha {
 
   // LIFECYCLE
 
-  activate() {
+  async activate() {
+    // Package deps are defined in the wrapper repository's package.json:
+    // https://github.com/Dreamscapes/atom-ide-mocha
+    await install('ide-mocha', { promptUser: true })
+
     this.#settings = atom.config.get('ide-mocha')
     this.#subscriptions = new CompositeDisposable()
     this.#subscriptions.add(atom.commands.add('atom-workspace', this.commands))
