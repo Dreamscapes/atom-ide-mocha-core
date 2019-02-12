@@ -70,7 +70,17 @@ class RemoteReporter extends Mocha.reporters.Base {
     RemoteReporter.events.forEach(event => {
       runner.on(event, ::this[event])
     })
+
+    // If the provider fails for some reason, show the error in the console
+    this.#provider.on('error', ::this.onError)
   }
+
+  onError(err) {
+    // eslint-disable-next-line no-console
+    console.error(err)
+    throw err
+  }
+
 
   start() {
     this.#provider.emit('start', serialisers.runner(this.#runner))
