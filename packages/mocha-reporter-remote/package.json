@@ -7,7 +7,7 @@
   "contributors": [],
   "dependencies": {
     "remote-event-emitter": "^1.2.0",
-    "@atom-ide/utils": "^1.0.0"
+    "@atom-ide/utils": "file:../../bundled/utils"
   },
   "devDependencies": {
     "mocha": "^5.0.0"
