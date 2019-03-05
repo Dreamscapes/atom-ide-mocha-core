@@ -7,5 +7,4 @@ find . \
   -not -path '*/node_modules/*' \
   -not -path '*/.*' \
   -not -name '.*.js' \
-  -not -name babel.config.js \
-  -not -name eslintrc.js
+  -not -name babel.config.js
