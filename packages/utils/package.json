@@ -1,0 +1,19 @@
+{
+  "name": "@atom-ide/utils",
+  "description": "Code shared across multiple core packages in this monorepo",
+  "version": "1.0.0",
+  "author": "Robert Rossmann <rr.rossmann@me.com>",
+  "bugs": "https://github.com/Dreamscapes/atom-ide-mocha-core/issues",
+  "contributors": [],
+  "dependencies": {
+    "hash-to-port": "^1.0.0"
+  },
+  "homepage": "https://github.com/Dreamscapes/atom-ide-mocha-core/tree/master/packages/utils",
+  "keywords": [],
+  "license": "BSD-3-Clause",
+  "main": "src",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Dreamscapes/atom-ide-mocha-core.git"
+  }
+}

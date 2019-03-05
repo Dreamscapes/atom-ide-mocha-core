@@ -1,21 +1,6 @@
-import * as os from 'os'
-import * as path from 'path'
-import * as hashToPort from 'hash-to-port'
+import { mkaddress } from '@atom-ide/utils'
 
 const CONSOLE_VIEW_URI = 'atom://nuclide/console'
-
-function mkaddress({ root, type = 'unix' }) {
-  const name = path.basename(root)
-
-  switch (type) {
-    case 'unix':
-      return path.resolve(os.tmpdir(), `ide-mocha-${name}.sock`)
-    case 'IP':
-      return hashToPort(name)
-    default:
-      throw new Error(`Unknown address interface type: ${type}`)
-  }
-}
 
 function mkcommandinfo({ address }) {
   return [
