@@ -1,6 +1,10 @@
 'use strict'
 
 module.exports = {
+  reporterOption: [
+    `root=${__dirname}`,
+    'nostats=1',
+  ],
   colors: true,
   checkLeaks: true,
   require: [

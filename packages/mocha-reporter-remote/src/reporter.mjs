@@ -1,5 +1,6 @@
 import * as Mocha from 'mocha'
 import { Provider } from 'remote-event-emitter'
+import { mkaddress } from '@atom-ide/utils'
 import serialisers from './serialisers'
 
 /**
@@ -55,6 +56,8 @@ class RemoteReporter extends Mocha.reporters.Base {
    * @param   {Object}    opts                          Options object
    * @param   {Object}    opts.reporterOptions          Reporter options, as provided by Mocha
    * @param   {String}    opts.reporterOptions.address  Address to send the events to
+   * @param   {String}    opts.reporterOptions.root     Root directory of the project
+   * @param   {String}    opts.reporterOptions.mode     Networking mode. either `unix` or `ip`.
    * @param   {Boolean}   opts.reporterOptions.nostats  If set to a truthy value, the reporter will
    *                                                    not print the final suite stats to stdout
    */
@@ -63,6 +66,14 @@ class RemoteReporter extends Mocha.reporters.Base {
 
     this.#runner = runner
     this.#options = options
+
+    if (this.#options.root) {
+      this.#options.address = mkaddress({
+        root: this.#options.root,
+        mode: this.#options.mode || 'unix',
+      })
+    }
+
     // Initialise the remote event emitter provider
     this.#provider = new Provider({ destination: options.address })
 
