@@ -2,7 +2,7 @@
 
 module.exports = {
   extends: [
-    '@commitlint/config-conventional',
+    '@strv/commitlint-config',
   ],
 
   rules: {
@@ -10,7 +10,5 @@ module.exports = {
       'reporter',
       'ui',
     ]],
-
-    'body-leading-blank': [2, 'always'],
   },
 }
