@@ -15,7 +15,7 @@ function mkaddress({ root, mode = 'unix' }) {
 
   switch (mode) {
     case 'unix':
-      return path.resolve(os.tmpdir(), `ide-mocha-${name}.sock`)
+      return path.resolve(os.tmpdir(), `mocha-${name}.sock`)
     case 'IP':
     case 'ip':
       return hashToPort(name)
