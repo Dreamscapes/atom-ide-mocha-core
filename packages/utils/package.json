@@ -12,6 +12,7 @@
   "keywords": [],
   "license": "BSD-3-Clause",
   "main": "src",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/Dreamscapes/atom-ide-mocha-core.git"
