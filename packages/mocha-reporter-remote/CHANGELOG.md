@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.2](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.6.0...mocha-reporter-remote@1.6.2) (2019-03-06)
+
+
+### Bug Fixes
+
+* attempt to fix installation issues ([6bbcb65](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/6bbcb65))
+
+
+
+
+
 # [1.6.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.5.0...mocha-reporter-remote@1.6.0) (2019-03-05)
 
 
