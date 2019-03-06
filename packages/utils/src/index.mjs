@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as hashToPort from 'hash-to-port'
 import * as constants from './constants'
 
-const { MODE } = constants
+const { SOCKET_SUPPORTED_PLATFORMS, MODE } = constants
 
 /**
  * Create a socket address or port in a deterministic way for a given absolute directory path
@@ -30,7 +30,19 @@ function mkaddress({ root, mode = 'unix' }) {
   }
 }
 
+/**
+ * Determine the best network interface mode for the current platform
+ *
+ * @return    {String}    Either 'unix' or 'IP'
+ */
+function mkdefaultmode() {
+  return SOCKET_SUPPORTED_PLATFORMS.includes(os.platform())
+    ? MODE.UNIX
+    : MODE.TCP
+}
+
 export {
   mkaddress,
+  mkdefaultmode,
   constants,
 }

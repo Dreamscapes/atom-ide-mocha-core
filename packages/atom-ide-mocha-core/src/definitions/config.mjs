@@ -1,12 +1,4 @@
-import * as os from 'os'
-
-// These platforms support Unix sockets so let's use that by default.
-// win32 will use IP. 💩
-const socketCapablePlatforms = ['aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos']
-const defaultInterface = socketCapablePlatforms.includes(os.platform())
-  ? 'unix'
-  : 'IP'
-import { constants } from '@atom-ide/utils'
+import { mkdefaultmode, constants } from '@atom-ide/utils'
 
 const { MODE } = constants
 const config = {
@@ -31,7 +23,7 @@ const config = {
           MODE.UNIX,
           MODE.TCP,
         ],
-        default: defaultInterface,
+        default: mkdefaultmode(),
       },
 
       verbosity: {
