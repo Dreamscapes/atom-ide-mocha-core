@@ -13,8 +13,12 @@ const { SOCKET_SUPPORTED_PLATFORMS, MODE } = constants
  * @param     {String}    options.mode      Interface mode. Either `unix` or `ip`.
  * @return    {String}                      A full path to the socket
  */
-function mkaddress({ root, mode = 'unix' }) {
+function mkaddress({ root, mode }) {
   const name = path.basename(root)
+
+  if (!mode) {
+    mode = mkdefaultmode()
+  }
 
   switch (mode) {
     case MODE.UNIX:
