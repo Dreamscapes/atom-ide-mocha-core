@@ -6,7 +6,7 @@
   "bugs": "https://github.com/Dreamscapes/atom-ide-mocha-core/issues",
   "contributors": [],
   "dependencies": {
-    "@atom-ide/utils": "file:../../bundled/utils",
+    "@atom-ide/utils": "^1.0.0",
     "remote-event-emitter": "^1.2.0"
   },
   "devDependencies": {
