@@ -1,6 +1,9 @@
 import * as os from 'os'
 import * as path from 'path'
 import * as hashToPort from 'hash-to-port'
+import * as constants from './constants'
+
+const { MODE } = constants
 
 /**
  * Create a socket address or port in a deterministic way for a given absolute directory path
@@ -14,11 +17,14 @@ function mkaddress({ root, mode = 'unix' }) {
   const name = path.basename(root)
 
   switch (mode) {
-    case 'unix':
+    case MODE.UNIX:
+    case MODE.UNIX.toLowerCase():
       return path.resolve(os.tmpdir(), `mocha-${name}.sock`)
-    case 'IP':
-    case 'ip':
+
+    case MODE.TCP:
+    case MODE.TCP.toLowerCase():
       return hashToPort(name)
+
     default:
       throw new Error(`Unknown address interface mode: ${mode}`)
   }
@@ -26,4 +32,5 @@ function mkaddress({ root, mode = 'unix' }) {
 
 export {
   mkaddress,
+  constants,
 }

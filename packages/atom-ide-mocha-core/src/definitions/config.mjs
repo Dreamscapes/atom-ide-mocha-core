@@ -6,7 +6,9 @@ const socketCapablePlatforms = ['aix', 'darwin', 'freebsd', 'linux', 'openbsd', 
 const defaultInterface = socketCapablePlatforms.includes(os.platform())
   ? 'unix'
   : 'IP'
+import { constants } from '@atom-ide/utils'
 
+const { MODE } = constants
 const config = {
   general: {
     order: 1,
@@ -26,8 +28,8 @@ const config = {
         ].join(' '),
         type: 'string',
         enum: [
-          'unix',
-          'IP',
+          MODE.UNIX,
+          MODE.TCP,
         ],
         default: defaultInterface,
       },
