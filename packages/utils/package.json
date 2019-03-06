@@ -1,7 +1,7 @@
 {
   "name": "@atom-ide/utils",
   "description": "Code shared across multiple core packages in this monorepo",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Robert Rossmann <rr.rossmann@me.com>",
   "bugs": "https://github.com/Dreamscapes/atom-ide-mocha-core/issues",
   "contributors": [],
