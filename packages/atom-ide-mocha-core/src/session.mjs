@@ -162,6 +162,7 @@ function mkdiagmessage({ root, test, err }) {
   callsite.line--
 
   const { file, line, column } = callsite
+  const description = `${test.fullTitle}\n\n${err.stack}`
 
   return {
     location: {
@@ -170,7 +171,7 @@ function mkdiagmessage({ root, test, err }) {
     },
     severity: 'error',
     excerpt: err.message,
-    description: `${test.fullTitle}\n\n${err.stack}`,
+    description: ['```', description, '```'].join('\n'),
   }
 }
 
