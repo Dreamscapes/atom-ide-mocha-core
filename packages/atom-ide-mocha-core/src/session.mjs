@@ -81,9 +81,8 @@ class Session extends EventEmitter {
   }
 
   didStartSuite({ suite }) {
-    // Avoid printing an empty line at the beginning of test run, the root suite does not have a
-    // title ☝️
-    if (suite.root) {
+    // Avoid printing empty lines due to some suites not having a title path (ie. the root suite) ☝️
+    if (!suite.titlePath || !suite.titlePath.length) {
       return
     }
 
