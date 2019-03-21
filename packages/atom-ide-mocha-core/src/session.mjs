@@ -16,6 +16,13 @@ const loglevels = {
 }
 
 class Session extends EventEmitter {
+  static constants = {
+    speed: {
+      FAST: 'fast',
+      SLOW: 'slow',
+    },
+  }
+
   #root = null
   #linter = null
   #messages = new Map()
@@ -95,14 +102,26 @@ class Session extends EventEmitter {
   }
 
   didPassTest({ test }) {
+    const isSlow = test.speed === Session.constants.speed.SLOW
     let message = test.title
 
     if (this.#settings.durations) {
-      message += ` (${test.duration} ms)`
+      const units = isSlow ? 'ms 🐌' : 'ms'
+      message += ` (${test.duration} ${units})`
     }
 
     this.#stats.passes++
-    this.#loglevel >= loglevels.spec && this.#console.success(message)
+
+    if (this.#loglevel >= loglevels.spec) {
+      switch (isSlow) {
+        case true:
+          this.#console.warn(message)
+          break
+        case false:
+          this.#console.success(message)
+        // no default
+      }
+    }
   }
 
   async didFailTest({ test, err, showConsole }) {
