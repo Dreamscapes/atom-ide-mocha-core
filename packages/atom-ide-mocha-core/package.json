@@ -7,6 +7,9 @@
     "email": "rr.rossmann@me.com"
   },
   "bugs": "https://github.com/Dreamscapes/atom-ide-mocha-core/issues",
+  "bundledDependencies": [
+    "@atom-ide/utils"
+  ],
   "contributors": [],
   "dependencies": {
     "@atom-ide/utils": "^1.1.1",
@@ -14,9 +17,6 @@
     "remote-event-emitter": "^1.2.0",
     "stack-utils": "^1.0.2"
   },
-  "bundledDependencies": [
-    "@atom-ide/utils"
-  ],
   "engines": {
     "atom": "^1.32.0",
     "node": "^10.0.0"

@@ -4,6 +4,9 @@
   "version": "1.6.3",
   "author": "Robert Rossmann <rr.rossmann@me.com>",
   "bugs": "https://github.com/Dreamscapes/atom-ide-mocha-core/issues",
+  "bundledDependencies": [
+    "@atom-ide/utils"
+  ],
   "contributors": [],
   "dependencies": {
     "@atom-ide/utils": "^1.1.1",
@@ -12,9 +15,6 @@
   "devDependencies": {
     "mocha": "^6.0.0"
   },
-  "bundledDependencies": [
-    "@atom-ide/utils"
-  ],
   "engines": {
     "node": "^10"
   },
