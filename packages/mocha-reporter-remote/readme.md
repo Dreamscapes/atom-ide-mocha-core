@@ -63,7 +63,7 @@ module.exports = {
 
 @TODO 😢
 
-For now, have a look at what data is being sent to the receiving end [here](src/serialisers.mjs) and how the data is parsed from the socket and consumed [here](https://github.com/Dreamscapes/atom-ide-mocha-core/blob/master/packages/ide-mocha/src/remote/index.mjs).
+For now, have a look at what data is being sent to the receiving end [here](src/serialisers.mjs) and how the data is parsed from the socket and consumed [here](https://github.com/Dreamscapes/atom-ide-mocha-core/blob/master/packages/atom-ide-mocha-core/src/ide-mocha.mjs#L227).
 
 ## License
 
