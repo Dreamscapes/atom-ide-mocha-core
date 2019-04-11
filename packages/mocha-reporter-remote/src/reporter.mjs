@@ -3,6 +3,8 @@ import { Provider } from 'remote-event-emitter'
 import { mkaddress, mkdefaultmode, constants } from '@atom-ide/utils'
 import serialisers from './serialisers'
 
+const { MOCHA_EVENT } = constants
+
 /**
  * Mocha reporter which relays all Mocha's events to a TCP or Unix socket
  */
@@ -71,7 +73,7 @@ class RemoteReporter extends Mocha.reporters.Base {
     this.#provider = new Provider({ destination: this.#options.address })
 
     // Bind Mocha events to functions defined on this class
-    Object.values(constants.MOCHA_EVENT).forEach(event => {
+    Object.values(MOCHA_EVENT).forEach(event => {
       this.#runner.on(event, ::this[event])
     })
 
@@ -86,12 +88,12 @@ class RemoteReporter extends Mocha.reporters.Base {
   }
 
 
-  start() {
-    this.#provider.emit(constants.MOCHA_EVENT.START, serialisers.runner(this.#runner))
+  [MOCHA_EVENT.START]() {
+    this.#provider.emit(MOCHA_EVENT.START, serialisers.runner(this.#runner))
   }
 
-  end() {
-    this.#provider.emit(constants.MOCHA_EVENT.END, serialisers.runner(this.#runner))
+  [MOCHA_EVENT.END]() {
+    this.#provider.emit(MOCHA_EVENT.END, serialisers.runner(this.#runner))
 
     // Print the final test results to the console, just in case
     if (!this.#options.nostats) {
@@ -104,44 +106,40 @@ class RemoteReporter extends Mocha.reporters.Base {
     this.#provider = null
   }
 
-  suite(suite) {
-    this.#provider.emit(constants.MOCHA_EVENT.SUITE, serialisers.suite(suite))
+  [MOCHA_EVENT.SUITE](suite) {
+    this.#provider.emit(MOCHA_EVENT.SUITE, serialisers.suite(suite))
   }
 
-  'suite end'(suite) {
-    this.#provider.emit(constants.MOCHA_EVENT.SUITE_END, serialisers.suite(suite))
+  [MOCHA_EVENT.SUITE_END](suite) {
+    this.#provider.emit(MOCHA_EVENT.SUITE_END, serialisers.suite(suite))
   }
 
-  test(test) {
-    this.#provider.emit(constants.MOCHA_EVENT.TEST, serialisers.runnable(test))
+  [MOCHA_EVENT.TEST](test) {
+    this.#provider.emit(MOCHA_EVENT.TEST, serialisers.runnable(test))
   }
 
-  'test end'(test) {
-    this.#provider.emit(constants.MOCHA_EVENT.TEST_END, serialisers.runnable(test))
+  [MOCHA_EVENT.TEST_END](test) {
+    this.#provider.emit(MOCHA_EVENT.TEST_END, serialisers.runnable(test))
   }
 
-  hook(hook) {
-    this.#provider.emit(constants.MOCHA_EVENT.HOOK, serialisers.runnable(hook))
+  [MOCHA_EVENT.HOOK](hook) {
+    this.#provider.emit(MOCHA_EVENT.HOOK, serialisers.runnable(hook))
   }
 
-  'hook end'(hook) {
-    this.#provider.emit(constants.MOCHA_EVENT.HOOK_END, serialisers.runnable(hook))
+  [MOCHA_EVENT.HOOK_END](hook) {
+    this.#provider.emit(MOCHA_EVENT.HOOK_END, serialisers.runnable(hook))
   }
 
-  pass(test) {
-    this.#provider.emit(constants.MOCHA_EVENT.PASS, serialisers.runnable(test))
+  [MOCHA_EVENT.PASS](test) {
+    this.#provider.emit(MOCHA_EVENT.PASS, serialisers.runnable(test))
   }
 
-  fail(test, err) {
-    this.#provider.emit(
-      constants.MOCHA_EVENT.FAIL,
-      serialisers.runnable(test),
-      serialisers.err(err),
-    )
+  [MOCHA_EVENT.FAIL](test, err) {
+    this.#provider.emit(MOCHA_EVENT.FAIL, serialisers.runnable(test), serialisers.err(err))
   }
 
-  pending(test) {
-    this.#provider.emit(constants.MOCHA_EVENT.PENDING, serialisers.runnable(test))
+  [MOCHA_EVENT.PENDING](test) {
+    this.#provider.emit(MOCHA_EVENT.PENDING, serialisers.runnable(test))
   }
 }
 
