@@ -19,6 +19,7 @@ const config = {
           'implementation._',
         ].join(' '),
         type: 'string',
+        radio: true,
         enum: [
           MODE.UNIX,
           MODE.TCP,
