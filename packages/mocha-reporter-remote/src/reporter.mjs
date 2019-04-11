@@ -60,11 +60,11 @@ class RemoteReporter extends Mocha.reporters.Base {
     }
 
     // Initialise the remote event emitter provider
-    this.#provider = new Provider({ destination: options.address })
+    this.#provider = new Provider({ destination: this.#options.address })
 
     // Bind Mocha events to functions defined on this class
     Object.values(constants.MOCHA_EVENT).forEach(event => {
-      runner.on(event, ::this[event])
+      this.#runner.on(event, ::this[event])
     })
 
     // If the provider fails for some reason, show the error in the console
