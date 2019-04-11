@@ -11,7 +11,7 @@ module.exports = {
     'source-map-support/register',
   ],
   exclude: [
-    '**/node_modules/**'
+    '**/node_modules/**',
   ],
-  spec: ["**/*.test.js"]
+  spec: ['**/*.test.js'],
 }
