@@ -83,7 +83,7 @@ distclean: clean
 pristine: distclean
 	rm -rf node_modules packages/*/node_modules
 
-release: $(SRCFILES) lint
+version: $(SRCFILES) lint
 	git pull && lerna version
 
 .PHONY: force
