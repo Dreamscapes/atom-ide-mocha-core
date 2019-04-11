@@ -15,7 +15,8 @@
     "@atom-ide/utils": "^1.1.2",
     "atom-package-deps": "^5.0.0",
     "remote-event-emitter": "^1.2.0",
-    "stack-utils": "^1.0.2"
+    "stack-utils": "^1.0.2",
+    "strip-ansi": "^5.2.0"
   },
   "engines": {
     "atom": "^1.32.0",

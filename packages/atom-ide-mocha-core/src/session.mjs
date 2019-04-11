@@ -1,6 +1,7 @@
 import * as os from 'os'
 import * as path from 'path'
 import { EventEmitter } from 'events'
+import * as stripansi from 'strip-ansi'
 import * as StackUtils from 'stack-utils'
 import { mkstats, openConsole } from './util'
 
@@ -134,7 +135,7 @@ class Session extends EventEmitter {
 
     this.#stats.failures++
     this.#console.error(title)
-    this.#console.error(err.stack)
+    this.#console.error(stripansi(err.stack))
 
     if (showConsole) {
       await openConsole()
@@ -180,7 +181,8 @@ function mkdiagmessage({ root, test, err }) {
   callsite.line--
 
   const { file, line, column } = callsite
-  const description = `${test.fullTitle}\n\n${err.stack}`
+  const excerpt = stripansi(err.message)
+  const description = `${test.fullTitle}\n\n${stripansi(err.stack)}`
 
   return {
     location: {
@@ -188,8 +190,8 @@ function mkdiagmessage({ root, test, err }) {
       position: [[line, column], [line, column]],
     },
     severity: 'error',
-    excerpt: err.message,
     description: ['```', description, '```'].join('\n'),
+    excerpt,
   }
 }
 
