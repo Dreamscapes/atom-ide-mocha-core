@@ -2,7 +2,6 @@
 
 module.exports = {
   reporterOption: [
-    `root=${__dirname}`,
     'nostats=1',
   ],
   colors: true,

@@ -28,8 +28,8 @@ npx mocha --reporter mocha-reporter-remote --reporter-options address=12345
 
 The following options are accepted by this reporter:
 
-- `root`: Specifies the root directory where Mocha is being run. This is useful for auto-detecting the socket or port of the remote listener.
-- `mode`: Specifies the networking mode to be used. Allowed values are `unix` for Unix sockets, `ip` / `IP` for TCP. Default: `unix`.
+- `root`: Specifies the root directory where Mocha is being run. This is useful for auto-detecting the socket or port of the remote listener. Default: current working directory.
+- `mode`: Specifies the networking mode to be used. Allowed values are `unix` for Unix sockets, `ip` / `IP` for TCP. Default: `unix` everywhere except Windows, where the default is `IP`.
 - `address`: Either TCP port number of the absolute path to the unix socket to which to send events. Only used if `root` is not provided. ⚠️
 - `nostats`: When set to `1` or any "truthy" value, Mocha will not print the final test stats to the console when it is done running. Default: `0`.
 

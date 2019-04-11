@@ -52,6 +52,14 @@ class RemoteReporter extends Mocha.reporters.Base {
     // Ensure we have a valid mode for the current platform
     this.#options.mode = this.#options.mode || mkdefaultmode()
 
+    // If the user did not provide neither root nor the socket address, assume we are running Mocha
+    // for a project at path in the current working directory. This should cover 95% of use cases
+    // and allows for a truly configuration-less setup. 🚀
+    if (!this.#options.root && !this.#options.address) {
+      this.#options.root = process.cwd()
+    }
+
+    // Note that even if the user provided an address, specifying root will override it. ⚠️
     if (this.#options.root) {
       this.#options.address = mkaddress({
         root: this.#options.root,
