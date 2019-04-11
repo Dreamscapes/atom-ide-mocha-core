@@ -1,7 +1,7 @@
 {
   "name": "atom-ide-mocha-core",
   "description": "Code for IDE-Mocha Atom package",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "author": {
     "name": "Robert Rossmann",
     "email": "rr.rossmann@me.com"
@@ -12,7 +12,7 @@
   ],
   "contributors": [],
   "dependencies": {
-    "@atom-ide/utils": "^1.1.1",
+    "@atom-ide/utils": "^1.1.2",
     "atom-package-deps": "^5.0.0",
     "remote-event-emitter": "^1.2.0",
     "stack-utils": "^1.0.2"

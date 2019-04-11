@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.6.3...mocha-reporter-remote@1.7.0) (2019-04-11)
+
+
+### Bug Fixes
+
+* **reporter:** add Mocha v6 to supported versions ([8494c4b](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/8494c4b))
+
+
+### Features
+
+* **reporter:** determine best network mode for all platforms ([2a92cce](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/2a92cce))
+* **reporter:** use current working directory as default for root 🚀 ([1f21e3f](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/1f21e3f))
+
+
+
+
+
 ## [1.6.3](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.6.2...mocha-reporter-remote@1.6.3) (2019-03-06)
 
 **Note:** Version bump only for package mocha-reporter-remote
