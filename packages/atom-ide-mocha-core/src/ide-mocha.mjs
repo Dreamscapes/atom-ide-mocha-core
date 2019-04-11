@@ -3,6 +3,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { install } from 'atom-package-deps'
 import { Consumer } from 'remote-event-emitter'
+import { constants } from '@atom-ide/utils'
 import * as util from './util'
 import { config, menus } from './definitions'
 import { Session } from './session'
@@ -236,14 +237,15 @@ class IdeMocha {
     })
 
     const showConsole = this.#settings.console.openConsoleOnFailure
+    const { MOCHA_EVENT } = constants
 
-    source.on('start', runner => session.didStartRunning({ runner }))
-    source.on('end', runner => session.didFinishRunning({ runner }))
-    source.on('suite', suite => session.didStartSuite({ suite }))
-    source.on('test end', () => session.didFinishTest())
-    source.on('pass', test => session.didPassTest({ test }))
-    source.on('fail', (test, err) => session.didFailTest({ test, err, showConsole }))
-    source.on('pending', test => session.didSkipTest({ test }))
+    source.on(MOCHA_EVENT.START, runner => session.didStartRunning({ runner }))
+    source.on(MOCHA_EVENT.END, runner => session.didFinishRunning({ runner }))
+    source.on(MOCHA_EVENT.SUITE, suite => session.didStartSuite({ suite }))
+    source.on(MOCHA_EVENT.TEST_END, () => session.didFinishTest())
+    source.on(MOCHA_EVENT.PASS, test => session.didPassTest({ test }))
+    source.on(MOCHA_EVENT.FAIL, (test, err) => session.didFailTest({ test, err, showConsole }))
+    source.on(MOCHA_EVENT.PENDING, test => session.didSkipTest({ test }))
     source.on('close', () => session.didClose())
 
     session.once('close', ({ stats }) => {
