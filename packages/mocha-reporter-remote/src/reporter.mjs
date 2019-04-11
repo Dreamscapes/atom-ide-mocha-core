@@ -1,6 +1,6 @@
 import * as Mocha from 'mocha'
 import { Provider } from 'remote-event-emitter'
-import { mkaddress, constants } from '@atom-ide/utils'
+import { mkaddress, mkdefaultmode, constants } from '@atom-ide/utils'
 import serialisers from './serialisers'
 
 /**
@@ -49,10 +49,13 @@ class RemoteReporter extends Mocha.reporters.Base {
     this.#runner = runner
     this.#options = options
 
+    // Ensure we have a valid mode for the current platform
+    this.#options.mode = this.#options.mode || mkdefaultmode()
+
     if (this.#options.root) {
       this.#options.address = mkaddress({
         root: this.#options.root,
-        mode: this.#options.mode || constants.MODE.UNIX,
+        mode: this.#options.mode,
       })
     }
 
