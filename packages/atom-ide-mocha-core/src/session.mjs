@@ -182,7 +182,13 @@ function mkdiagmessage({ root, test, err }) {
 
   const { file, line, column } = callsite
   const excerpt = stripansi(err.message)
-  const description = `${test.fullTitle}\n\n${stripansi(err.stack)}`
+  const description = [
+    `#### ${test.fullTitle}`,
+    '\n\n',
+    '```',
+    `${stripansi(err.stack)}`,
+    '```',
+  ].join('\n')
 
   return {
     location: {
@@ -190,8 +196,8 @@ function mkdiagmessage({ root, test, err }) {
       position: [[line, column], [line, column]],
     },
     severity: 'error',
-    description: ['```', description, '```'].join('\n'),
     excerpt,
+    description,
   }
 }
 
