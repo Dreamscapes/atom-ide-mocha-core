@@ -45,7 +45,7 @@ class RemoteReporter extends Mocha.reporters.Base {
    * @param   {Boolean}   opts.reporterOptions.nostats  If set to a truthy value, the reporter will
    *                                                    not print the final suite stats to stdout
    */
-  constructor(runner, { reporterOptions: options }) {
+  constructor(runner, { reporterOptions: options } = {}) {
     super(runner)
 
     this.#runner = runner
