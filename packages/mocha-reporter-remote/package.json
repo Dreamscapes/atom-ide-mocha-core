@@ -1,7 +1,7 @@
 {
   "name": "mocha-reporter-remote",
   "description": "Deliver Mocha reporter events over TCP or socket connection",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "author": "Robert Rossmann <rr.rossmann@me.com>",
   "bugs": "https://github.com/Dreamscapes/atom-ide-mocha-core/issues",
   "bundledDependencies": [

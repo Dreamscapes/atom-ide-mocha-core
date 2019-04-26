@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.7.0...mocha-reporter-remote@1.7.1) (2019-04-26)
+
+
+### Bug Fixes
+
+* **reporter:** do not crash when Mocha does not provide reporterOptions ([6e1fef0](https://github.com/Dreamscapes/atom-ide-mocha-core/commit/6e1fef0))
+
+
+
+
+
 # [1.7.0](https://github.com/Dreamscapes/atom-ide-mocha-core/compare/mocha-reporter-remote@1.6.3...mocha-reporter-remote@1.7.0) (2019-04-11)
 
 
